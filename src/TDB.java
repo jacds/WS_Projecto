@@ -29,16 +29,24 @@ public class TDB {
         //model can be queried with SPARQL
         Model model = dataset.getDefaultModel();
 
-        System.out.println(model.isEmpty());
+        String name = "Muse";
+        String queryString = "SELECT ?gender " +
+                "WHERE" +
+                "   { ?x <" + nameSpace + "hasName> \"" + name + "\" ." +
+                "     ?x <" + nameSpace + "hasGender> ?gender ." +
+                "   }";
 
-        String queryString = "Select ?name WHERE {?x <"+nameSpace+"hasName> ?name}";
-
-        Query query = QueryFactory.create(queryString) ;
+        /*Query query = QueryFactory.create(queryString) ;
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
             ResultSet results = qexec.execSelect() ;
             results = ResultSetFactory.copyResults(results);
             ResultSetFormatter.out(System.out, results, query) ;
-        }
+        }*/
+
+        QueryManager qm = new QueryManager();
+        String result = qm.getArtistSingleInfo("Elvis Presley", "hasGender");
+        qm.closeConnections();
+        System.out.println(result);
 
         /*ResIterator iter = model.listSubjects();
 
