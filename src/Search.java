@@ -5,13 +5,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Asus on 14-12-2016.
- */
+
 @WebServlet(name = "Search")
 public class Search extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String search = request.getParameter("query");
+        search = search.toLowerCase();
+        String type = request.getParameter("type");
+        QueryManager qm = new QueryManager();
 
+        if(type.equals("artist")){
+
+        }
+        else if(type.equals("album")){
+
+        }
+        else if(type.equals("track")){
+
+        }
+
+        qm.closeConnections();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
