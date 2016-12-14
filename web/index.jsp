@@ -36,12 +36,7 @@
             <li class="sidebar-search">
               <form action="./Search" method="POST" >
                 <div class="input-group custom-search-form">
-                  <br/><input type="text" class="form-control" placeholder="Search..." name="query">
-                  <select name="type">
-                    <option value="artist">Artist</option>
-                    <option value="album">Album</option>
-                    <option value="track">Track</option>
-                  </select>
+                  <input type="text" class="form-control" placeholder="Search..." name="query">
                   <span class="input-group-btn">
                     <button class="btn btn-default" type="submit" name="action" value="search">
                       <i class="fa fa-search"></i>

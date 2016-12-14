@@ -13,7 +13,7 @@
     <script src="sbadmin2/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 
-    <title>Artist List</title>
+    <title>Search Results</title>
 </head>
 <body>
 <!---->
@@ -68,19 +68,24 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Artist List</h1>
+                    <h1 class="page-header">Search Results</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <c:forEach items="${result}" var="item">
-               <a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            <c:forEach items="${artist}" var="item">
+                <label>Artist: </label><a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            </c:forEach>
+            <c:forEach items="${album}" var="item">
+                <label>Album: </label><a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            </c:forEach>
+            <c:forEach items="${track}" var="item">
+                <label>Track: </label> ${item} <br />
             </c:forEach>
         </div>
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-
 </div>
 </body>
 </html>
