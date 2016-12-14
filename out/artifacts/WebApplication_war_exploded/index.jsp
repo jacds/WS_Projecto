@@ -51,7 +51,7 @@
               <a href="Artist">Artists<span class="fa arrow"></span></a>
             </li>
             <li>
-              <a href="#">Albums<span class="fa arrow"></span></a>
+              <a href="Album">Albums<span class="fa arrow"></span></a>
             </li>
               <!-- /.nav-second-level -->
           </ul>
@@ -71,11 +71,11 @@
           <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
+          Project for the Web Semantics Master's Degree Course
       </div>
       <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-
   </div>
   </body>
 </html>

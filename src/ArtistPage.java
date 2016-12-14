@@ -8,21 +8,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by Asus on 14-12-2016.
+ * Created by Rocha on 14/12/2016.
  */
-@WebServlet(name = "/Album")
-public class Album extends HttpServlet {
+@WebServlet(name = "/ArtistPage")
+public class ArtistPage extends HttpServlet {
+
+    public void init(){
+        System.out.println("Checking artist");
+    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String name = request.getParameter("name").replace("+"," ");
         QueryManager qm = new QueryManager();
-        ArrayList<String> result = qm.getAlbums();
-        qm.closeConnections();
+        ArrayList<String> result = qm.getArtistInfo(name);
 
         request.setAttribute("result", result);
-        RequestDispatcher view=request.getRequestDispatcher("albumList.jsp");
+        RequestDispatcher view=request.getRequestDispatcher("artistPage.jsp");
         view.forward(request,response);
     }
 }

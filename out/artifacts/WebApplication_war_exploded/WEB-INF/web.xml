@@ -15,4 +15,15 @@
         <url-pattern>/Artist</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ArtistPage</servlet-name>
+        <servlet-class>ArtistPage</servlet-class>
+    </servlet>
+
+    <!-- File Upload -->
+    <servlet-mapping>
+        <servlet-name>ArtistPage</servlet-name>
+        <url-pattern>/ArtistPage</url-pattern>
+    </servlet-mapping>
+
 </web-app>
