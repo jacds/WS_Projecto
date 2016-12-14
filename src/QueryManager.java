@@ -48,32 +48,32 @@ public class QueryManager {
         result.add(name);
 
         //  Gender
-        String gender = getArtistSingleInfo(name, "hasGender");
+        String gender = getSingleInfo(name, "hasName", "hasGender");
         result.add(gender);
 
         //  Dates
         String beginDate, endDate;
         if(gender != null){
-            beginDate = getArtistSingleInfo(name, "hasBornDate");
-            endDate = getArtistSingleInfo(name, "hasDeathDate");
+            beginDate = getSingleInfo(name, "hasName", "hasBornDate");
+            endDate = getSingleInfo(name, "hasName", "hasDeathDate");
         }
         else{
-            beginDate = getArtistSingleInfo(name, "hasBeginDate");
-            endDate = getArtistSingleInfo(name, "hasEndDate");
+            beginDate = getSingleInfo(name, "hasName", "hasBeginDate");
+            endDate = getSingleInfo(name, "hasName", "hasEndDate");
         }
         result.add(beginDate);
         result.add(endDate);
 
         //  Location
-        String location = getArtistSingleInfo(name, "hasLocation");
+        String location = getSingleInfo(name, "hasName", "hasLocation");
         result.add(location);
 
         //  Description
-        String description = getArtistSingleInfo(name, "hasDescription");
+        String description = getSingleInfo(name, "hasName", "hasDescription");
         result.add(description);
 
         //  LastFM Page
-        String lastFM = getArtistSingleInfo(name, "hastLastFMPage");
+        String lastFM = getSingleInfo(name, "hasName", "hastLastFMPage");
         result.add(lastFM);
 
         // result = {name, gender, beginDate, endDate, location, description, lastFM};
@@ -89,10 +89,10 @@ public class QueryManager {
         return results;
     }
 
-    public String getArtistSingleInfo(String name, String attribute){
+    public String getSingleInfo(String name, String identifier, String attribute){
         String sparlQuery = "SELECT ?attribute " +
                 "WHERE" +
-                "   { ?x <" + nameSpace + "hasName> \"" + name + "\" ." +
+                "   { ?x <" + nameSpace + identifier + "> \"" + name + "\" ." +
                 "     ?x <" + nameSpace + attribute + "> ?attribute ." +
                 "   }";
 
@@ -104,7 +104,7 @@ public class QueryManager {
     }
 
     public ArrayList<String> getArtistAlbums(String name){
-        String artistID = getArtistSingleInfo(name, "hasID");
+        String artistID = getSingleInfo(name, "hasName", "hasID");
         artistID = artistID.replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
         String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?album WHERE { ?x :isAlbumOf :"+ artistID +". ?x :hasTitle ?album}";
 
@@ -128,13 +128,39 @@ public class QueryManager {
     //getAlbumInfo
         //hasTitle
         //isAlbumOf
+        //hasImage
+        //hasLastFMPage
         //hasTrack
             //hasTitle
             //hasNumber
             //hasLength
             //hasLastFMPage
-        //hasImage
-        //hasLastFMPage
+    public ArrayList<ArrayList<String>> getAlbumInfo(String title){
+        ArrayList<ArrayList<String>> results = new ArrayList<>();
+        ArrayList<String> result = new ArrayList<>();
+
+        //  Title
+        result.add(title);
+
+        //  Artist
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?artist WHERE { ?x :isAlbumOf ?y. ?x :hasTitle \"" + title +"\" . ?y :hasName ?artist}";
+        String artist = executeQuery(sparqlQuery, "artist").get(0);
+        result.add(artist);
+
+        //  Image
+        String image = getSingleInfo(title, "hasTitle", "hasImage");
+        result.add(image);
+
+        //  LastFMPage
+        String lastFM = getSingleInfo(title, "hasTitle", "hasLastFMPage");
+        result.add(lastFM);
+
+        results.add(result);
+
+        //  Tracks
+
+        return results;
+    }
 
 
     //getValueFromTable(search_info, type)

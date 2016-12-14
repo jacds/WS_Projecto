@@ -37,9 +37,8 @@ public class TDB {
                 "   }";*/
 
         QueryManager qm = new QueryManager();
-        String asd = qm.getArtistSingleInfo("Elvis Presley", "hasID");
-        asd = asd.replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
-        String queryString = "PREFIX : <" + nameSpace + "> SELECT ?album WHERE { ?x :isAlbumOf :"+ asd +". ?x :hasTitle ?album}";
+        String album = "ChangesBowie";
+        String queryString = "PREFIX : <" + nameSpace + "> SELECT ?artist WHERE { ?x :isAlbumOf ?y. ?x :hasTitle \"" + album +"\" . ?y :hasName ?artist}";
 
         /*String sparlQuery = "SELECT ?attribute " +
                 "WHERE" +
