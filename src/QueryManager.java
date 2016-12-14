@@ -73,10 +73,11 @@ public class QueryManager {
 
         //  Description
         String description = getSingleInfo(name, "hasName", "hasDescription");
+        description = description.substring(0, description.indexOf("<a"));
         result.add(description);
 
         //  LastFM Page
-        String lastFM = getSingleInfo(name, "hasName", "hastLastFMPage");
+        String lastFM = getSingleInfo(name, "hasName", "hasLastFMPage");
         result.add(lastFM);
 
         // result = {name, gender, beginDate, endDate, location, description, lastFM};
@@ -170,6 +171,8 @@ public class QueryManager {
 
         return results;
     }
+
+
 
 
 

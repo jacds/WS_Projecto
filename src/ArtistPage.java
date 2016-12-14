@@ -24,6 +24,7 @@ public class ArtistPage extends HttpServlet {
         String name = request.getParameter("name").replace("+"," ");
         QueryManager qm = new QueryManager();
         ArrayList<ArrayList<String>> result = qm.getArtistInfo(name);
+        qm.closeConnections();
         ArrayList<String> artistInfo = result.get(0);
         ArrayList<String> artistAlbums = result.get(1);
 
