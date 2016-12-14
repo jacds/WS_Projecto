@@ -42,28 +42,73 @@ public class QueryManager {
 
     //getArtists
     public ArrayList<String> getArtists(){
-        ArrayList<String> result = new ArrayList<>();
-
         String sparqlQuery = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name}";
 
-        Query query = QueryFactory.create(sparqlQuery);
-        QueryExecution qe = QueryExecutionFactory.create(query, model);
-        ResultSet results = qe.execSelect();
-
-        while(results.hasNext()){
-            QuerySolution qs = results.nextSolution();
-            RDFNode temp = qs.get("name");
-            result.add(temp.toString());
-        }
-
-        qe.close();
-
-        return result;
+        return executeQuery(sparqlQuery, "name");
     }
 
 
     //getArtistInfo
+        //hasName
+        //hasGender (if person)
+        //hasBirthDate (if person)
+        //hasBeginDate (if group)
+        //hasDeathDate (if person)
+        //hasEndDate (if group)
+        //hasLocation
+        //hasDescription
+        //hasLastFMPage
+    public ArrayList<String> getArtistInfo(String name) {
+        ArrayList<String> result = new ArrayList<>();
+        result.add(name);
 
+        //  Gender
+        String gender = getArtistSingleInfo(name, "hasGender");
+        result.add(gender);
+
+        //  Dates
+        String beginDate, endDate;
+        if(gender != null){
+            beginDate = getArtistSingleInfo(name, "hasBirthDate");
+            endDate = getArtistSingleInfo(name, "hasDeathDate");
+        }
+        else{
+            beginDate = getArtistSingleInfo(name, "hasBeginDate");
+            endDate = getArtistSingleInfo(name, "hasEndDate");
+        }
+        result.add(beginDate);
+        result.add(endDate);
+
+        //  Location
+        String location = getArtistSingleInfo(name, "hasLocation");
+        result.add(location);
+
+        //  Description
+        String description = getArtistSingleInfo(name, "hasDescription");
+        result.add(description);
+
+        //  LastFM Page
+        String lastFM = getArtistSingleInfo(name, "hastLastFMPage");
+        result.add(lastFM);
+
+        // result = {name, gender, beginDate, endDate, location, description, lastFM};
+
+        return result;
+    }
+
+    public String getArtistSingleInfo(String name, String attribute){
+        String sparlQuery = "SELECT ?attribute " +
+                "WHERE" +
+                "   { ?x <" + nameSpace + "hasName> \"" + name + "\" ." +
+                "     ?x <" + nameSpace + attribute + "> ?attribute ." +
+                "   }";
+
+        try{
+            return executeQuery(sparlQuery, "attribute").get(0);
+        }catch (Exception e){
+            return null;
+        }
+    }
 
     //getAlbums
     public ArrayList<String> getAlbums(){
@@ -75,19 +120,7 @@ public class QueryManager {
                 " ?s <"+nameSpace+"hasTitle> ?title "+
                 "}";
 
-        Query query = QueryFactory.create(sparqlQuery);
-        QueryExecution qe = QueryExecutionFactory.create(query, model);
-        ResultSet results = qe.execSelect();
-
-        while(results.hasNext()){
-            QuerySolution qs = results.nextSolution();
-            RDFNode temp = qs.get("title");
-            result.add(temp.toString());
-        }
-
-        qe.close();
-
-        return result;
+        return executeQuery(sparqlQuery, "title");
     }
 
 
@@ -97,10 +130,21 @@ public class QueryManager {
     //getValueFromTable(search_info, type)
     //search_info = band -> compare to None
 
+    private ArrayList<String> executeQuery(String sparqlQuery, String parameter){
+        ArrayList<String> result = new ArrayList<>();
 
+        Query query = QueryFactory.create(sparqlQuery);
+        QueryExecution qe = QueryExecutionFactory.create(query, model);
+        ResultSet results = qe.execSelect();
 
+        while(results.hasNext()){
+            QuerySolution qs = results.nextSolution();
+            RDFNode temp = qs.get(parameter);
+            result.add(temp.toString());
+        }
 
+        qe.close();
 
-
-
+        return result;
+    }
 }
