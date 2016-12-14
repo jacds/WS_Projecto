@@ -76,6 +76,10 @@
             <label>End Date: </label> ${result[3]} <br/>
             <label>Location: </label> ${result[4]} <br/>
             <label>Summary: </label> ${result[5]} <br/>
+            <br/><label>Albums: </label> <br/>
+            <c:forEach items="${albums}" var="item">
+            <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            </c:forEach>
 
         </div>
         <!-- /.container-fluid -->

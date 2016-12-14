@@ -26,4 +26,26 @@
         <url-pattern>/ArtistPage</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Album</servlet-name>
+        <servlet-class>Album</servlet-class>
+    </servlet>
+
+    <!-- File Upload -->
+    <servlet-mapping>
+        <servlet-name>Album</servlet-name>
+        <url-pattern>/Album</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AlbumPage</servlet-name>
+        <servlet-class>AlbumPage</servlet-class>
+    </servlet>
+
+    <!-- File Upload -->
+    <servlet-mapping>
+        <servlet-name>AlbumPage</servlet-name>
+        <url-pattern>/AlbumPage</url-pattern>
+    </servlet-mapping>
+
 </web-app>
