@@ -31,7 +31,7 @@ public class QueryManager {
 
     QueryManager(){
         //dataset = TDBFactory.createDataset("/Users/Rocha/Documents/WS_Projecto/tdb"); //Directorio Rocha
-        dataset = TDBFactory.createDataset("/Users/Rocha/Documents/WS_Projecto/tdb"); //Directorio Silva
+        dataset = TDBFactory.createDataset("C:/Users/Asus/WebApplication/tdb"); //Directorio Silva
         model = dataset.getDefaultModel();
     }
 
