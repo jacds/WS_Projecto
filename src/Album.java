@@ -8,7 +8,7 @@ import java.io.IOException;
 /**
  * Created by Asus on 14-12-2016.
  */
-@WebServlet(name = "Album")
+@WebServlet(name = "/Album")
 public class Album extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

@@ -24,7 +24,7 @@ public class Artist extends HttpServlet {
         qm.closeConnections();
 
         request.setAttribute("result", result);
-        RequestDispatcher view=request.getRequestDispatcher("index.jsp");
+        RequestDispatcher view=request.getRequestDispatcher("artistList.jsp");
         view.forward(request,response);
     }
 
