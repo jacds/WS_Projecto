@@ -34,14 +34,21 @@
         <div class="sidebar-nav navbar-collapse">
           <ul class="nav" id="side-menu">
             <li class="sidebar-search">
-              <div class="input-group custom-search-form">
-                <input type="text" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-              </div>
+              <form action="./Search" method="POST" >
+                <div class="input-group custom-search-form">
+                  <br/><input type="text" class="form-control" placeholder="Search..." name="query">
+                  <select name="type">
+                    <option value="artist">Artist</option>
+                    <option value="album">Album</option>
+                    <option value="track">Track</option>
+                  </select>
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit" name="action" value="search">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </form>
               <!-- /input-group -->
             </li>
             <li>
