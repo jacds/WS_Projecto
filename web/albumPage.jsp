@@ -76,9 +76,9 @@
             <label>Description: </label> ${result[3]} <br/>
             <br/><label>See more at: </label> <a href="${result[4]}">LastFM Page</a> <br/>
             <br/><label>Tracks: </label> <br/>
-            <!--<c:forEach items="${albums}" var="item">
-                <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
-            </c:forEach>-->
+            <c:forEach items="${number}" var="item" varStatus="status">
+                <strong>${number[status.index]}</strong> ${title[status.index]} ${length[status.index]} <br />
+            </c:forEach>
 
         </div>
         <!-- /.container-fluid -->
