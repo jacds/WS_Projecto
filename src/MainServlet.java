@@ -22,7 +22,7 @@ public class MainServlet extends HttpServlet {
         type = request.getParameter("type");
 
         if(type.equals("artist")){
-
+            
         }
         else if(type.equals("album")){
 
