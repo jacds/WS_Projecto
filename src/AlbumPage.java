@@ -22,10 +22,14 @@ public class AlbumPage extends HttpServlet {
         QueryManager qm = new QueryManager();
         ArrayList<ArrayList<String>> result = qm.getAlbumInfo(name);
         ArrayList<String> albumInfo = result.get(0);
-        //ArrayList<String> albumTracks = result.get(1);
+        ArrayList<String> tracksNumber = result.get(1);
+        ArrayList<String> tracksTitle = result.get(2);
+        ArrayList<String> tracksLength = result.get(3);
 
         request.setAttribute("result", albumInfo);
-        //request.setAttribute("tracks", albumTracks);
+        request.setAttribute("number", tracksNumber);
+        request.setAttribute("title", tracksTitle);
+        request.setAttribute("length", tracksLength);
         RequestDispatcher view=request.getRequestDispatcher("albumPage.jsp");
         view.forward(request,response);
 

@@ -173,14 +173,19 @@ public class QueryManager {
         results.add(result);
 
         //  Tracks
-        result = getAlbumTracks(title);
+        ArrayList<ArrayList<String>> tracks = getAlbumTracks(title);
+        for (ArrayList<String> list: tracks ) {
+            results.add(list);
+        }
+
+        //result = {number1, title1, length1, number2, title2, length2, ...}
         results.add(result);
 
         return results;
     }
 
-    private ArrayList<String> getAlbumTracks(String title){
-        ArrayList<String> result = new ArrayList<>();
+    private ArrayList<ArrayList<String>> getAlbumTracks(String title){
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
         String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle \"" + title + "\". ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
@@ -206,16 +211,22 @@ public class QueryManager {
 
         Collections.sort(sortingArray.subList(0, sortingArray.size()));
         int index;
+        ArrayList<String> number = new ArrayList<>();
+        ArrayList<String> name = new ArrayList<>();
+        ArrayList<String> length = new ArrayList<>();
+
         for (Integer var: sortingArray) {
             index = aux.indexOf(String.valueOf(var));
-            result.add(aux.get(index));
-            result.add(aux.get(index+1));
-            result.add(aux.get(index+2));
+            number.add(aux.get(index));
+            name.add(aux.get(index+1));
+            length.add(aux.get(index+2));
         }
-        for(int i=0; i<result.size()-2; i += 3){
-            System.out.println(result.get(i) + result.get(i+1) + result.get(i+2));
-        }
+
         qe.close();
+
+        result.add(number);
+        result.add(name);
+        result.add(length);
 
         return result;
     }
