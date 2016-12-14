@@ -1,0 +1,18 @@
+index.jsp / MainServlet.java
+	Search bar - search_info 
+	Tipo_pesquisa - type = {artist, album, track}
+	Artist - artist.jsp
+	Álbuns - album.jsp
+
+artist.jsp / Artist.java
+	lista_artistas
+	artista_selecionado
+
+
+album.jsp / Album.java
+	lista_albuns
+	album_selecionado
+
+
+search.jsp / Search.java
+	lista_resultados

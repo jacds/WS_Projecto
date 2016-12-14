@@ -1,39 +1,31 @@
+import org.apache.jena.base.Sys;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
- * Created by Asus on 13-12-2016.
+ * Created by Asus on 14-12-2016.
  */
-@WebServlet(name = "MainServlet")
-public class MainServlet extends HttpServlet {
-    private String search_info;
-    private String type;
-
+@WebServlet(name = "Artist")
+public class Artist extends HttpServlet {
     /*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }*/
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        search_info = request.getParameter("search_info");
-        type = request.getParameter("type");
+        QueryManager qm = new QueryManager();
+        ArrayList<String> result = qm.getArtists();
+        qm.closeConnections();
 
-        if(type.equals("artist")){
-
-        }
-        else if(type.equals("album")){
-
-        }
-        else if(type.equals("track")){
-
-        }
+        request.setAttribute("result", result);
     }
 
-
-    public void init() throws ServletException{
-        System.out.println("Server running...");
+    public void init(){
+        System.out.println("Artists page");
     }
 }
