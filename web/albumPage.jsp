@@ -71,16 +71,14 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <label>Gender: </label> ${result[1]} <br/>
-            <label>Begin Date: </label> ${result[2]} <br/>
-            <label>End Date: </label> ${result[3]} <br/>
-            <label>Location: </label> ${result[4]} <br/>
-            <label>Summary: </label> ${result[5]} <br/>
-            <br/><label>See more at: </label> <a href="${result[6]}">LastFM Page</a> <br/>
-            <br/><label>Albums: </label> <br/>
-            <c:forEach items="${albums}" var="item">
+            <img src="${result[2]}" alt="Album Cover" class="img-thumbnail">
+            <br/><br/><label>Artist: </label> ${result[1]} <br/>
+            <label>Description: </label> ${result[3]} <br/>
+            <br/><label>See more at: </label> <a href="${result[4]}">LastFM Page</a> <br/>
+            <br/><label>Tracks: </label> <br/>
+            <!--<c:forEach items="${albums}" var="item">
                 <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
-            </c:forEach>
+            </c:forEach>-->
 
         </div>
         <!-- /.container-fluid -->
