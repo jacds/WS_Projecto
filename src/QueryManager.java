@@ -3,8 +3,11 @@ import org.apache.jena.rdf.model.*;
 import org.apache.jena.tdb.TDBFactory;
 
 import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.tdb.lib.StringAbbrev;
+import org.apache.jena.vocabulary.RDF;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class QueryManager {
@@ -73,7 +76,8 @@ public class QueryManager {
 
         //  Description
         String description = getSingleInfo(name, "hasName", "hasDescription");
-        description = description.substring(0, description.indexOf("<a"));
+        int index = (description.contains("<a"))? description.indexOf("<a") : 0;
+        description = description.substring(0, index) + " ...";
         result.add(description);
 
         //  LastFM Page
@@ -139,7 +143,6 @@ public class QueryManager {
             //hasTitle
             //hasNumber
             //hasLength
-            //hasLastFMPage
     public ArrayList<ArrayList<String>> getAlbumInfo(String title){
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         ArrayList<String> result = new ArrayList<>();
@@ -158,6 +161,8 @@ public class QueryManager {
 
         //  Description
         String description = getSingleInfo(title, "hasTitle", "hasDescription");
+        int index = (description.contains("<a"))? description.indexOf("<a") : 0;
+        description = description.substring(0, index) + " ...";
         result.add(description);
 
         //  LastFMPage
@@ -168,14 +173,52 @@ public class QueryManager {
         results.add(result);
 
         //  Tracks
+        result = getAlbumTracks(title);
+        results.add(result);
 
         return results;
     }
 
+    private ArrayList<String> getAlbumTracks(String title){
+        ArrayList<String> result = new ArrayList<>();
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle \"" + title + "\". ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length}";
 
+        Query query = QueryFactory.create(sparqlQuery);
+        QueryExecution qe = QueryExecutionFactory.create(query, model);
+        ResultSet results = qe.execSelect();
 
+        ArrayList<Integer> sortingArray = new ArrayList<>();
+        ArrayList<String> aux = new ArrayList<>();
 
+        while(results.hasNext()){
+            QuerySolution qs = results.nextSolution();
+            // Track Number
+            RDFNode temp = qs.get("number");
+            aux.add(temp.toString());
+            sortingArray.add(Integer.parseInt(temp.toString()));
+            //  Track Title
+            temp = qs.get("track");
+            aux.add(temp.toString());
+            // Track Length
+            temp = qs.get("length");
+            aux.add(temp.toString());
+        }
 
+        Collections.sort(sortingArray.subList(0, sortingArray.size()));
+        int index;
+        for (Integer var: sortingArray) {
+            index = aux.indexOf(String.valueOf(var));
+            result.add(aux.get(index));
+            result.add(aux.get(index+1));
+            result.add(aux.get(index+2));
+        }
+        for(int i=0; i<result.size()-2; i += 3){
+            System.out.println(result.get(i) + result.get(i+1) + result.get(i+2));
+        }
+        qe.close();
+
+        return result;
+    }
 
     //getValueFromTable(search_info, type)
     //search_info = band -> compare to None

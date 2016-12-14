@@ -29,15 +29,18 @@ public class TDB {
         //model can be queried with SPARQL
         Model model = dataset.getDefaultModel();
 
-        String name = "Muse";
+        //String name = "Muse";
         /*String queryString = "SELECT ?gender " +
                 "WHERE" +
                 "   { ?x <" + nameSpace + "hasName> \"" + name + "\" ." +
                 "     ?x <" + nameSpace + "hasGender> ?gender ." +
                 "   }";*/
 
-        QueryManager qm = new QueryManager();
-        String album = "ChangesBowie";
+        //QueryManager qm = new QueryManager();
+        String album = "Christmas Hits";
+
+        String queryString = "PREFIX : <" + nameSpace + "> SELECT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle \"" + album + "\". ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length}";
+        /*String album = "ChangesBowie";
         String queryString = "PREFIX : <" + nameSpace + "> SELECT ?artist WHERE { ?x :isAlbumOf ?y. ?x :hasTitle \"" + album +"\" . ?y :hasName ?artist}";
 
         /*String sparlQuery = "SELECT ?attribute " +
