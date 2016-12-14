@@ -22,5 +22,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.5.9" level="application_server_libraries" />
     <orderEntry type="library" name="org.json:json:20160810" level="project" />
     <orderEntry type="library" name="jena" level="project" />
+    <orderEntry type="library" name="taglibs-standard-compat-1.2.5" level="project" />
   </component>
 </module>

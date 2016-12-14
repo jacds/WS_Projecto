@@ -15,7 +15,10 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.log4j.varia.NullAppender;
 
 import javax.xml.crypto.Data;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -27,7 +30,8 @@ public class QueryManager {
     private static final String nameSpace = "http://www.semanticweb.org/rocha/ontologies/SemanticMusic#";
 
     QueryManager(){
-        dataset = TDBFactory.createDataset("./tdb");
+        //dataset = TDBFactory.createDataset("/Users/Rocha/Documents/WS_Projecto/tdb"); //Directorio Rocha
+        dataset = TDBFactory.createDataset("/Users/Rocha/Documents/WS_Projecto/tdb"); //Directorio Silva
         model = dataset.getDefaultModel();
     }
 
@@ -49,7 +53,7 @@ public class QueryManager {
         while(results.hasNext()){
             QuerySolution qs = results.nextSolution();
             RDFNode temp = qs.get("name");
-            result.add(temp.asNode().getLocalName());
+            result.add(temp.toString());
         }
 
         qe.close();

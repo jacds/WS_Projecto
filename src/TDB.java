@@ -29,7 +29,9 @@ public class TDB {
         //model can be queried with SPARQL
         Model model = dataset.getDefaultModel();
 
-        String queryString = "Select ?x ?name WHERE {?x <"+nameSpace+"hasName> ?name}";
+        System.out.println(model.isEmpty());
+
+        String queryString = "Select ?name WHERE {?x <"+nameSpace+"hasName> ?name}";
 
         Query query = QueryFactory.create(queryString) ;
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
