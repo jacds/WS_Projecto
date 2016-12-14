@@ -66,6 +66,29 @@ public class QueryManager {
 
 
     //getAlbums
+    public ArrayList<String> getAlbums(){
+        ArrayList<String> result = new ArrayList<>();
+        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+                "SELECT DISTINCT ?title\n" +
+                "WHERE {\n" +
+                "  ?s rdf:type <"+nameSpace+"Album>.\n" +
+                " ?s <"+nameSpace+"hasTitle> ?title "+
+                "}";
+
+        Query query = QueryFactory.create(sparqlQuery);
+        QueryExecution qe = QueryExecutionFactory.create(query, model);
+        ResultSet results = qe.execSelect();
+
+        while(results.hasNext()){
+            QuerySolution qs = results.nextSolution();
+            RDFNode temp = qs.get("title");
+            result.add(temp.toString());
+        }
+
+        qe.close();
+
+        return result;
+    }
 
 
     //getAlbumInfo
