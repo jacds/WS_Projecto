@@ -23,9 +23,12 @@ public class ArtistPage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name").replace("+"," ");
         QueryManager qm = new QueryManager();
-        ArrayList<String> result = qm.getArtistInfo(name);
+        ArrayList<ArrayList<String>> result = qm.getArtistInfo(name);
+        ArrayList<String> artistInfo = result.get(0);
+        ArrayList<String> artistAlbums = result.get(1);
 
-        request.setAttribute("result", result);
+        request.setAttribute("result", artistInfo);
+        request.setAttribute("albums", artistAlbums);
         RequestDispatcher view=request.getRequestDispatcher("artistPage.jsp");
         view.forward(request,response);
     }
