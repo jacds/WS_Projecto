@@ -29,7 +29,7 @@ public class AlbumPage extends HttpServlet {
 
         for(int i=0; i<tracksLength.size(); i++){
             LocalTime timeOfDay = LocalTime.ofSecondOfDay(Integer.parseInt(tracksLength.get(i)));
-            tracksLength.set(i, timeOfDay.toString().substring(3));
+            tracksLength.set(i, timeOfDay.toString());
         }
 
         request.setAttribute("result", albumInfo);

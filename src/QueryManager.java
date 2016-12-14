@@ -8,6 +8,8 @@ import org.apache.jena.vocabulary.RDF;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class QueryManager {
@@ -186,7 +188,7 @@ public class QueryManager {
 
     private ArrayList<ArrayList<String>> getAlbumTracks(String title){
         ArrayList<ArrayList<String>> result = new ArrayList<>();
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle \"" + title + "\". ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length}";
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle \"" + title + "\". ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
         QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -199,6 +201,9 @@ public class QueryManager {
             QuerySolution qs = results.nextSolution();
             // Track Number
             RDFNode temp = qs.get("number");
+            if(aux.contains(temp.toString())){
+                continue;
+            }
             aux.add(temp.toString());
             sortingArray.add(Integer.parseInt(temp.toString()));
             //  Track Title
@@ -208,6 +213,9 @@ public class QueryManager {
             temp = qs.get("length");
             aux.add(temp.toString());
         }
+
+
+
 
         Collections.sort(sortingArray.subList(0, sortingArray.size()));
         int index;
@@ -220,6 +228,7 @@ public class QueryManager {
             number.add(aux.get(index));
             name.add(aux.get(index+1));
             length.add(aux.get(index+2));
+            System.out.println(aux.get(index) + aux.get(index+1) + aux.get(index+2));
         }
 
         qe.close();
