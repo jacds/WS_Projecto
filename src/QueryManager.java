@@ -1,29 +1,12 @@
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.tdb.TDBFactory;
-import org.apache.jena.util.FileManager;
 
-import org.apache.jena.ontology.Individual;
-import org.apache.jena.ontology.OntClass;
-import org.apache.jena.ontology.OntModel;
-import org.apache.jena.ontology.OntModelSpec;
-import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.log4j.varia.NullAppender;
 
-import javax.xml.crypto.Data;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-/**
- * Created by Asus on 14-12-2016.
- */
+
 public class QueryManager {
     private Dataset dataset;
     private Model model;
@@ -58,7 +41,9 @@ public class QueryManager {
         //hasLocation
         //hasDescription
         //hasLastFMPage
-    public ArrayList<String> getArtistInfo(String name) {
+        //hasAlbum
+            //hasTitle
+    public ArrayList<ArrayList<String>> getArtistInfo(String name) {
         ArrayList<String> result = new ArrayList<>();
         result.add(name);
 
@@ -69,7 +54,7 @@ public class QueryManager {
         //  Dates
         String beginDate, endDate;
         if(gender != null){
-            beginDate = getArtistSingleInfo(name, "hasBirthDate");
+            beginDate = getArtistSingleInfo(name, "hasBornDate");
             endDate = getArtistSingleInfo(name, "hasDeathDate");
         }
         else{
@@ -93,7 +78,15 @@ public class QueryManager {
 
         // result = {name, gender, beginDate, endDate, location, description, lastFM};
 
-        return result;
+        ArrayList<ArrayList<String>> results = new ArrayList<>();
+        results.add(result);
+
+        //  result = {album1, album2, ...}
+
+        result = getArtistAlbums(name);
+        results.add(result);
+
+        return results;
     }
 
     public String getArtistSingleInfo(String name, String attribute){
@@ -108,6 +101,14 @@ public class QueryManager {
         }catch (Exception e){
             return null;
         }
+    }
+
+    public ArrayList<String> getArtistAlbums(String name){
+        String artistID = getArtistSingleInfo(name, "hasID");
+        artistID = artistID.replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?album WHERE { ?x :isAlbumOf :"+ artistID +". ?x :hasTitle ?album}";
+
+        return executeQuery(sparqlQuery, "album");
     }
 
     //getAlbums
@@ -125,6 +126,15 @@ public class QueryManager {
 
 
     //getAlbumInfo
+        //hasTitle
+        //isAlbumOf
+        //hasTrack
+            //hasTitle
+            //hasNumber
+            //hasLength
+            //hasLastFMPage
+        //hasImage
+        //hasLastFMPage
 
 
     //getValueFromTable(search_info, type)
@@ -140,7 +150,8 @@ public class QueryManager {
         while(results.hasNext()){
             QuerySolution qs = results.nextSolution();
             RDFNode temp = qs.get(parameter);
-            result.add(temp.toString());
+            if(!temp.toString().equals("(null)"))
+                result.add(temp.toString());
         }
 
         qe.close();

@@ -30,23 +30,42 @@ public class TDB {
         Model model = dataset.getDefaultModel();
 
         String name = "Muse";
-        String queryString = "SELECT ?gender " +
+        /*String queryString = "SELECT ?gender " +
                 "WHERE" +
                 "   { ?x <" + nameSpace + "hasName> \"" + name + "\" ." +
                 "     ?x <" + nameSpace + "hasGender> ?gender ." +
+                "   }";*/
+
+        QueryManager qm = new QueryManager();
+        String asd = qm.getArtistSingleInfo("Elvis Presley", "hasID");
+        asd = asd.replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
+        String queryString = "PREFIX : <" + nameSpace + "> SELECT ?album WHERE { ?x :isAlbumOf :"+ asd +". ?x :hasTitle ?album}";
+
+        /*String sparlQuery = "SELECT ?attribute " +
+                "WHERE" +
+                "   { ?x <" + nameSpace + "hasID> \"" + name + "\" ." +
+                "     ?x <" + nameSpace + attribute + "> ?attribute ." +
                 "   }";
 
-        /*Query query = QueryFactory.create(queryString) ;
+        /*QueryManager qm = new QueryManager();
+        String asd = qm.getArtistSingleInfo("Elvis Presley", "hasID");
+        asd = asd.replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
+        System.out.println(Integer.parseInt(asd));*/
+
+        //SELECT ?subject ?object
+        //WHERE { ?subject :hasCity ?object }
+
+        Query query = QueryFactory.create(queryString) ;
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
             ResultSet results = qexec.execSelect() ;
             results = ResultSetFactory.copyResults(results);
             ResultSetFormatter.out(System.out, results, query) ;
-        }*/
+        }
 
-        QueryManager qm = new QueryManager();
+        /*QueryManager qm = new QueryManager();
         String result = qm.getArtistSingleInfo("Elvis Presley", "hasGender");
         qm.closeConnections();
-        System.out.println(result);
+        System.out.println(result);*/
 
         /*ResIterator iter = model.listSubjects();
 
