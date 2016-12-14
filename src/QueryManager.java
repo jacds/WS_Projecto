@@ -13,8 +13,11 @@ public class QueryManager {
     private static final String nameSpace = "http://www.semanticweb.org/rocha/ontologies/SemanticMusic#";
 
     QueryManager(){
-        //dataset = TDBFactory.createDataset("/Users/Rocha/Documents/WS_Projecto/tdb"); //Directorio Rocha
-        dataset = TDBFactory.createDataset("C:/Users/Asus/WebApplication/tdb"); //Directorio Silva
+        try{
+            dataset = TDBFactory.createDataset("/Users/Rocha/Documents/WS_Projecto/tdb"); //Directorio Rocha
+        }catch (Exception e){
+            dataset = TDBFactory.createDataset("C:/Users/Asus/WebApplication/tdb"); //Directorio Silva
+        }
         model = dataset.getDefaultModel();
     }
 
@@ -154,7 +157,7 @@ public class QueryManager {
 
         //  Description
         String description = getSingleInfo(title, "hasTitle", "hasDescription");
-        result.add(description)
+        result.add(description);
 
         //  LastFMPage
         String lastFM = getSingleInfo(title, "hasTitle", "hasLastFMPage");
