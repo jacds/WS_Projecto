@@ -129,6 +129,7 @@ public class QueryManager {
         //hasTitle
         //isAlbumOf
         //hasImage
+        //hasDescription
         //hasLastFMPage
         //hasTrack
             //hasTitle
@@ -151,16 +152,23 @@ public class QueryManager {
         String image = getSingleInfo(title, "hasTitle", "hasImage");
         result.add(image);
 
+        //  Description
+        String description = getSingleInfo(title, "hasTitle", "hasDescription");
+        result.add(description)
+
         //  LastFMPage
         String lastFM = getSingleInfo(title, "hasTitle", "hasLastFMPage");
         result.add(lastFM);
 
+        //result = {title, artist, image, description, lastfm}
         results.add(result);
 
         //  Tracks
 
         return results;
     }
+
+
 
 
     //getValueFromTable(search_info, type)
