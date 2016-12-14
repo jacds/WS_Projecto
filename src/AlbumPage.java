@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -25,6 +26,11 @@ public class AlbumPage extends HttpServlet {
         ArrayList<String> tracksNumber = result.get(1);
         ArrayList<String> tracksTitle = result.get(2);
         ArrayList<String> tracksLength = result.get(3);
+
+        for(int i=0; i<tracksLength.size(); i++){
+            LocalTime timeOfDay = LocalTime.ofSecondOfDay(Integer.parseInt(tracksLength.get(i)));
+            tracksLength.set(i, timeOfDay.toString().substring(3));
+        }
 
         request.setAttribute("result", albumInfo);
         request.setAttribute("number", tracksNumber);
