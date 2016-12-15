@@ -1,15 +1,9 @@
 import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.tdb.TDBFactory;
-
 import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.tdb.lib.StringAbbrev;
-import org.apache.jena.vocabulary.RDF;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class QueryManager {
@@ -38,7 +32,13 @@ public class QueryManager {
         return executeQuery(sparqlQuery, "name");
     }
 
+    public ArrayList<String> getArtistByName(String name){
+        name = name.toLowerCase();
+        String sparqlQuery = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name . FILTER(STRSTARTS(lcase(?name),\"" + name + "\"))}";
 
+        return executeQuery(sparqlQuery, "name");
+    }
+        //FILTER (STRSTARTS(?o, "prefix"))
     //getArtistInfo
         //hasName
         //hasGender (if person)
@@ -102,6 +102,7 @@ public class QueryManager {
     }
 
     public String getSingleInfo(String name, String identifier, String attribute){
+        name = name.toLowerCase();
         String sparlQuery = "SELECT ?attribute " +
                 "WHERE" +
                 "   { ?x <" + nameSpace + identifier + "> ?name ." +
@@ -132,7 +133,7 @@ public class QueryManager {
                 "  ?s rdf:type <"+nameSpace+"Album>.\n" +
                 " ?s <"+nameSpace+"hasTitle> ?title "+
                 "}" +
-                "ORBER BY ?title";
+                "ORDER BY ?title";
 
         return executeQuery(sparqlQuery, "title");
     }
@@ -233,7 +234,6 @@ public class QueryManager {
             number.add(aux.get(index));
             name.add(aux.get(index+1));
             length.add(aux.get(index+2));
-            System.out.println(aux.get(index) + aux.get(index+1) + aux.get(index+2));
         }
 
         qe.close();

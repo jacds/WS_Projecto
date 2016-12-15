@@ -36,11 +36,11 @@ public class TDB {
                 "     ?x <" + nameSpace + "hasGender> ?gender ." +
                 "   }";*/
 
-        QueryManager qm = new QueryManager();
-        String album = "Christmas Hits";
+        //QueryManager qm = new QueryManager();
+        //String album = "Christmas Hits";
 
-        String description = qm.getSingleInfo("elvis presley", "hasName", "hasDescription");
-        System.out.println(description);
+        //String description = qm.getSingleInfo("elvis presley", "hasName", "hasDescription");
+        //System.out.println(description);
 
         //String queryString = "PREFIX : <" + nameSpace + "> SELECT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle \"" + album + "\". ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length}";
         /*String album = "ChangesBowie";
@@ -59,8 +59,9 @@ public class TDB {
 
         //SELECT ?subject ?object
         //WHERE { ?subject :hasCity ?object }
+        String queryString = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name . FILTER(STRSTARTS(lcase(?name),\"" + "a" + "\"))}";
 
-        /*Query query = QueryFactory.create(queryString) ;
+        Query query = QueryFactory.create(queryString) ;
         try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
             ResultSet results = qexec.execSelect() ;
             results = ResultSetFactory.copyResults(results);

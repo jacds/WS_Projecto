@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 @WebServlet(name = "Search")
@@ -11,18 +12,16 @@ public class Search extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("query");
         search = search.toLowerCase();
-        String type = request.getParameter("type");
         QueryManager qm = new QueryManager();
 
-        if(type.equals("artist")){
+        //  Artists
+        ArrayList<String> temp = null;
+        temp = qm.getArtistByName(search);
+        request.setAttribute("artists", temp);
 
-        }
-        else if(type.equals("album")){
 
-        }
-        else if(type.equals("track")){
 
-        }
+
 
         qm.closeConnections();
     }
