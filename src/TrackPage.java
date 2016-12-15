@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Asus on 15-12-2016.
  */
-@WebServlet(name = "TrackPage")
+@WebServlet(name = "/TrackPage")
 public class TrackPage extends HttpServlet {
     /*protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

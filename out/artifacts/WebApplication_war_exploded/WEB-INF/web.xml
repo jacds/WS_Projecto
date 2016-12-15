@@ -59,4 +59,15 @@
         <url-pattern>/Search</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>TrackPage</servlet-name>
+        <servlet-class>TrackPage</servlet-class>
+    </servlet>
+
+    <!-- File Upload -->
+    <servlet-mapping>
+        <servlet-name>TrackPage</servlet-name>
+        <url-pattern>/TrackPage</url-pattern>
+    </servlet-mapping>
+
 </web-app>

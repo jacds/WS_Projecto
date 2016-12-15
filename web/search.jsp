@@ -73,15 +73,18 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            <h3>Artists </h3>
             <c:forEach items="${artists}" var="item">
-                <label>Artist: </label><a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+                <a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
+            <br/><h3 >Albums </h3>
             <c:forEach items="${albums}" var="item">
-                <label>Album: </label><a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+                <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
-            <!--<c:forEach items="${track}" var="item">
-                <label>Track: </label> ${item} <br />
-            </c:forEach>-->
+            <br/><h3>Tracks </h3>
+            <c:forEach items="${tracks}" var="item">
+                ${item} <br />
+            </c:forEach>
         </div>
         <!-- /.container-fluid -->
     </div>

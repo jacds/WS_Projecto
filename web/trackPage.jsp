@@ -73,16 +73,10 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <img src="${result[2]}" alt="Album Cover" class="img-thumbnail">
-             ${item} </a> <br />
-            <br/><br/><label>Artist: </label> <a href="/ArtistPage?name=${result[1].replace(" ","+")}"> ${result[1]} </a> <br/>
-            <label>Description: </label> ${result[3]} <br/>
-            <br/><label>See more at: </label> <a href="${result[4]}">LastFM Page</a> <br/>
-            <br/><label>Tracks: </label> <br/>
-            <c:forEach items="${number}" var="item" varStatus="status">
-                <strong>${number[status.index]}</strong> <a href="/TrackPage?name=${title[status.index].replace(" ","+")}"> ${title[status.index]} </a> ${length[status.index]} <br />
-            </c:forEach>
-
+            <label>Album: </label> ${result[1]} <br/>
+            <label>Artist: </label> ${result[2]} <br/>
+            <label>Number: </label> ${result[3]} <br/>
+            <label>Length: </label> ${result[4]} <br/>
         </div>
         <!-- /.container-fluid -->
     </div>
