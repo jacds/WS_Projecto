@@ -1,3 +1,4 @@
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +20,8 @@ public class Search extends HttpServlet {
         temp = qm.getArtistByName(search);
         request.setAttribute("artists", temp);
 
-
-
+        RequestDispatcher view=request.getRequestDispatcher("search.jsp");
+        view.forward(request,response);
 
 
         qm.closeConnections();

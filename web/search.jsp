@@ -73,15 +73,15 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <c:forEach items="${artist}" var="item">
+            <c:forEach items="${artists}" var="item">
                 <label>Artist: </label><a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
-            <c:forEach items="${album}" var="item">
+            <!--<c:forEach items="${album}" var="item">
                 <label>Album: </label><a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
             <c:forEach items="${track}" var="item">
                 <label>Track: </label> ${item} <br />
-            </c:forEach>
+            </c:forEach>-->
         </div>
         <!-- /.container-fluid -->
     </div>
