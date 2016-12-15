@@ -144,13 +144,6 @@ public class QueryManager {
         return executeQuery(sparqlQuery, "title");
     }
 
-    /*public ArrayList<String> getArtistByName(String name){
-        name = name.toLowerCase();
-        String sparqlQuery = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name . FILTER(STRSTARTS(lcase(?name),\"" + name + "\"))}";
-
-        return executeQuery(sparqlQuery, "name");
-    }*/
-
     //getAlbumInfo
         //hasTitle
         //isAlbumOf
@@ -259,6 +252,38 @@ public class QueryManager {
         String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title WHERE {?x rdf:type <" + nameSpace + "Track>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
 
         return executeQuery(sparqlQuery, "title");
+    }
+
+    public ArrayList<String> getTrackInfo(String title){
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE { ?x :isTrackOf ?y. ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .?x :hasNumber ?number. ?x :hasLength ?length}";
+
+        Query query = QueryFactory.create(sparqlQuery);
+        QueryExecution qe = QueryExecutionFactory.create(query, model);
+        ResultSet results = qe.execSelect();
+
+        ArrayList<String> result = new ArrayList<>();
+        result.add(title);
+
+        while(results.hasNext()) {
+            QuerySolution qs = results.nextSolution();
+            //  Album
+            RDFNode temp = qs.get("album");
+            result.add(temp.toString());
+
+            //  Artist
+            temp = qs.get("artist");
+            result.add(temp.toString());
+
+            //  Number
+            temp = qs.get("number");
+            result.add(temp.toString());
+
+            //  Length
+            temp = qs.get("length");
+            result.add(temp.toString());
+        }
+
+        return result;
     }
 
     //getValueFromTable(search_info, type)
