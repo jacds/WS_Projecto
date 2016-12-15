@@ -255,7 +255,7 @@ public class QueryManager {
     }
 
     public ArrayList<String> getTrackInfo(String title){
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE { ?x :isTrackOf ?y. ?x :hastTitle \"" + title + "\" ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .?x :hasNumber ?number. ?x :hasLength ?length}";
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE { ?x :isTrackOf ?y. ?x :hastTitle \"" + title + "\". ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .?x :hasNumber ?number. ?x :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
         QueryExecution qe = QueryExecutionFactory.create(query, model);
