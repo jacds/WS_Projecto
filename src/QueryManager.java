@@ -256,37 +256,48 @@ public class QueryManager {
         return executeQuery(sparqlQuery, "title");
     }
 
-    public ArrayList<String> getTrackInfo(String title){
+    public ArrayList<ArrayList<String>> getTrackInfo(String title){
         String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE { ?x :isTrackOf ?y. ?x :hasTitle \"" + title + "\". ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .?x :hasNumber ?number. ?x :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
         QueryExecution qe = QueryExecutionFactory.create(query, model);
-        ResultSet results = qe.execSelect();
+        ResultSet resultset = qe.execSelect();
 
         ArrayList<String> result = new ArrayList<>();
         result.add(title);
+        ArrayList<ArrayList<String>> results = new ArrayList<>();
+        results.add(result);
 
-        while(results.hasNext()) {
-            QuerySolution qs = results.nextSolution();
+        ArrayList<String> album = new ArrayList<>();
+        ArrayList<String> artist = new ArrayList<>();
+        ArrayList<String> number = new ArrayList<>();
+        ArrayList<String> length = new ArrayList<>();
+        while(resultset.hasNext()) {
+            QuerySolution qs = resultset.nextSolution();
             //  Album
             RDFNode temp = qs.get("album");
-            result.add(temp.toString());
+            album.add(temp.toString());
 
             //  Artist
             temp = qs.get("artist");
-            result.add(temp.toString());
+            artist.add(temp.toString());
 
             //  Number
             temp = qs.get("number");
-            result.add(temp.toString());
+            number.add(temp.toString());
 
             //  Length
             temp = qs.get("length");
             LocalTime timeOfDay = LocalTime.ofSecondOfDay(Integer.parseInt(temp.toString()));
-            result.add(timeOfDay.toString());
+            length.add(timeOfDay.toString());
         }
 
-        return result;
+        results.add(album);
+        results.add(artist);
+        results.add(number);
+        results.add(length);
+
+        return results;
     }
 
     //getValueFromTable(search_info, type)
