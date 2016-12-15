@@ -68,15 +68,18 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">${result[0]}</h1>
+                    <h1 class="page-header">${title}</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <label>Album: </label> ${result[1]} <br/>
-            <label>Artist: </label> ${result[2]} <br/>
-            <label>Number: </label> ${result[3]} <br/>
-            <label>Length: </label> ${result[4]} <br/>
+            <c:forEach items="${album}" var="item" varStatus="status">
+                <label>Album: </label> ${album[status.index]} <br/>
+                <label>Artist: </label> ${artist[status.index]} <br/>
+                <label>Number: </label> ${number[status.index]} <br/>
+                <label>Length: </label> ${length[status.index]} <br/> <br/>
+            </c:forEach>
+
         </div>
         <!-- /.container-fluid -->
     </div>

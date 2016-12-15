@@ -83,7 +83,7 @@
             </c:forEach>
             <br/><h3>Tracks </h3>
             <c:forEach items="${tracks}" var="item">
-                ${item} <br />
+                <a href="/TrackPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
         </div>
         <!-- /.container-fluid -->
