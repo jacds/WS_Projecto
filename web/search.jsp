@@ -76,10 +76,10 @@
             <c:forEach items="${artists}" var="item">
                 <label>Artist: </label><a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
-            <!--<c:forEach items="${album}" var="item">
+            <c:forEach items="${albums}" var="item">
                 <label>Album: </label><a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
             </c:forEach>
-            <c:forEach items="${track}" var="item">
+            <!--<c:forEach items="${track}" var="item">
                 <label>Track: </label> ${item} <br />
             </c:forEach>-->
         </div>

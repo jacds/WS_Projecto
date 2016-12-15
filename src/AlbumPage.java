@@ -11,6 +11,8 @@ import java.util.ArrayList;
 /**
  * Created by Rocha on 14/12/2016.
  */
+
+//TODO FIX BUG WITH ALBUMS WITH THE SAME NAME FROM DIFFERENT ARTISTS
 @WebServlet(name = "/AlbumPage")
 public class AlbumPage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
