@@ -232,9 +232,6 @@ public class QueryManager {
             aux.add(temp.toString());
         }
 
-
-
-
         Collections.sort(sortingArray.subList(0, sortingArray.size()));
         int index;
         ArrayList<String> number = new ArrayList<>();
@@ -255,6 +252,13 @@ public class QueryManager {
         result.add(length);
 
         return result;
+    }
+
+    public ArrayList<String> getTracksByTitle(String title){
+        title = title.toLowerCase();
+        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title WHERE {?x rdf:type <" + nameSpace + "Track>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
+
+        return executeQuery(sparqlQuery, "title");
     }
 
     //getValueFromTable(search_info, type)

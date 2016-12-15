@@ -21,12 +21,11 @@ public class Search extends HttpServlet {
 
         //  Albums
         ArrayList<String> albums = qm.getAlbumsByTitle(search);
-        System.out.println(albums.size());
         request.setAttribute("albums", albums);
 
         //  Tracks
-
-
+        ArrayList<String> tracks = qm.getTracksByTitle(search);
+        request.setAttribute("tracks", tracks);
 
         qm.closeConnections();
         RequestDispatcher view=request.getRequestDispatcher("search.jsp");
