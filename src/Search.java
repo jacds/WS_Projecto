@@ -21,8 +21,8 @@ public class Search extends HttpServlet {
 
         //  Albums
         ArrayList<String> albums = qm.getAlbumsByTitle(search);
+        System.out.println(albums.size());
         request.setAttribute("albums", albums);
-
 
         //  Tracks
 

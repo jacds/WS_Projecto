@@ -139,7 +139,7 @@ public class QueryManager {
 
     public ArrayList<String> getAlbumsByTitle(String title){
         title = title.toLowerCase();
-        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title WHERE {?x rdf:type <" + nameSpace + "Album>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?name),\"" + title + "\"))}";
+        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title WHERE {?x rdf:type <" + nameSpace + "Album>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
 
         return executeQuery(sparqlQuery, "title");
     }
