@@ -19,12 +19,20 @@ public class Search extends HttpServlet {
         ArrayList<String> temp = null;
         temp = qm.getArtistByName(search);
         request.setAttribute("artists", temp);
+        temp.clear();
+        
+        //  Albums
+        temp = qm.getAlbumsByTitle(search);
+        request.setAttribute("albums", temp);
+        temp.clear();
 
-        RequestDispatcher view=request.getRequestDispatcher("search.jsp");
-        view.forward(request,response);
+        //  Tracks
+
 
 
         qm.closeConnections();
+        RequestDispatcher view=request.getRequestDispatcher("search.jsp");
+        view.forward(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

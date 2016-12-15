@@ -38,7 +38,6 @@ public class QueryManager {
 
         return executeQuery(sparqlQuery, "name");
     }
-        //FILTER (STRSTARTS(?o, "prefix"))
     //getArtistInfo
         //hasName
         //hasGender (if person)
@@ -138,6 +137,19 @@ public class QueryManager {
         return executeQuery(sparqlQuery, "title");
     }
 
+    public ArrayList<String> getAlbumsByTitle(String title){
+        title = title.toLowerCase();
+        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title WHERE {?x rdf:type <" + nameSpace + "Album>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?name),\"" + title + "\"))}";
+
+        return executeQuery(sparqlQuery, "title");
+    }
+
+    /*public ArrayList<String> getArtistByName(String name){
+        name = name.toLowerCase();
+        String sparqlQuery = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name . FILTER(STRSTARTS(lcase(?name),\"" + name + "\"))}";
+
+        return executeQuery(sparqlQuery, "name");
+    }*/
 
     //getAlbumInfo
         //hasTitle
