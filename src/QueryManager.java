@@ -2,6 +2,8 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.rdf.model.RDFNode;
+
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -280,7 +282,8 @@ public class QueryManager {
 
             //  Length
             temp = qs.get("length");
-            result.add(temp.toString());
+            LocalTime timeOfDay = LocalTime.ofSecondOfDay(Integer.parseInt(temp.toString()));
+            result.add(timeOfDay.toString());
         }
 
         return result;
