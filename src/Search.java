@@ -16,15 +16,13 @@ public class Search extends HttpServlet {
         QueryManager qm = new QueryManager();
 
         //  Artists
-        ArrayList<String> temp = null;
-        temp = qm.getArtistByName(search);
-        request.setAttribute("artists", temp);
-        temp.clear();
-        
+        ArrayList<String> artists = qm.getArtistByName(search);
+        request.setAttribute("artists", artists);
+
         //  Albums
-        temp = qm.getAlbumsByTitle(search);
-        request.setAttribute("albums", temp);
-        temp.clear();
+        ArrayList<String> albums = qm.getAlbumsByTitle(search);
+        request.setAttribute("albums", albums);
+
 
         //  Tracks
 
