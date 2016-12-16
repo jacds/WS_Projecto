@@ -3,6 +3,7 @@ import org.apache.jena.rdf.model.*;
 import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.util.FileManager;
 
+//TODO GET ARTIST PHOTO FROM LASTFM API
 public class TDB {
     private static final String nameSpace = "http://www.semanticweb.org/rocha/ontologies/SemanticMusic#";
 
