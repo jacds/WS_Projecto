@@ -26,12 +26,16 @@ public class TrackPage extends HttpServlet {
         ArrayList<String> artist = results.get(2);
         ArrayList<String> number = results.get(3);
         ArrayList<String> length = results.get(4);
+        ArrayList<String> albumID = results.get(5);
+        ArrayList<String> artistID = results.get(6);
 
         request.setAttribute("title", title);
         request.setAttribute("album", album);
         request.setAttribute("artist", artist);
         request.setAttribute("number", number);
         request.setAttribute("length", length);
+        request.setAttribute("albumID", albumID);
+        request.setAttribute("artistID", artistID);
 
         qm.closeConnections();
         RequestDispatcher view=request.getRequestDispatcher("trackPage.jsp");

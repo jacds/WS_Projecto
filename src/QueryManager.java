@@ -6,6 +6,7 @@ import org.apache.jena.rdf.model.RDFNode;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class QueryManager {
@@ -25,37 +26,6 @@ public class QueryManager {
     public void closeConnections(){
         model.close();
         dataset.close();
-    }
-
-    private ArrayList<ArrayList<String>> executeIDQuery(String sparqlQuery, String parameter, String id){
-        ArrayList<String> result = new ArrayList<>();
-        ArrayList<String> ids = new ArrayList<>();
-        ArrayList<ArrayList<String>> return_result = new ArrayList<>();
-
-        Query query = QueryFactory.create(sparqlQuery);
-        QueryExecution qe = QueryExecutionFactory.create(query, model);
-        ResultSet results = qe.execSelect();
-
-        while(results.hasNext()){
-            QuerySolution qs = results.nextSolution();
-            RDFNode temp = qs.get(parameter);
-            RDFNode temp_id = qs.get(id);
-            if(!temp.toString().equals("(null)")) {
-                result.add(temp.toString());
-                ids.add(temp_id.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", ""));
-            }
-        }
-
-        for(int i=0; i<ids.size(); i++){
-            System.out.println(result.get(i) + " " + ids.get(i));
-        }
-
-        qe.close();
-
-        return_result.add(result);
-        return_result.add(ids);
-
-        return return_result;
     }
 
     //getArtists
@@ -296,7 +266,7 @@ public class QueryManager {
     }
 
     public ArrayList<ArrayList<String>> getTrackInfo(String title, String id){
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE {:"+id + " :isTrackOf ?y. ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .:" + id + " :hasNumber ?number. :" + id + " :hasLength ?length}";
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?artistID ?album ?albumID WHERE {:"+id + " :isTrackOf ?y. ?y :hasID ?albumID. ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasID ?artistID. ?z :hasName ?artist .:" + id + " :hasNumber ?number. :" + id + " :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
         QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -308,7 +278,9 @@ public class QueryManager {
         results.add(result);
 
         ArrayList<String> album = new ArrayList<>();
+        ArrayList<String> albumID = new ArrayList<>();
         ArrayList<String> artist = new ArrayList<>();
+        ArrayList<String> artistID = new ArrayList<>();
         ArrayList<String> number = new ArrayList<>();
         ArrayList<String> length = new ArrayList<>();
         while(resultset.hasNext()) {
@@ -329,12 +301,22 @@ public class QueryManager {
             temp = qs.get("length");
             LocalTime timeOfDay = LocalTime.ofSecondOfDay(Integer.parseInt(temp.toString()));
             length.add(timeOfDay.toString());
+
+            //  AlbumID
+            temp = qs.get("albumID");
+            albumID.add(temp.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", ""));
+
+            //  ArtistID
+            temp = qs.get("artistID");
+            artistID.add(temp.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", ""));
         }
 
         results.add(album);
         results.add(artist);
         results.add(number);
         results.add(length);
+        results.add(albumID);
+        results.add(artistID);
 
         return results;
     }
@@ -359,5 +341,44 @@ public class QueryManager {
         qe.close();
 
         return result;
+    }
+
+    private ArrayList<ArrayList<String>> executeIDQuery(String sparqlQuery, String parameter, String id){
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<ArrayList<String>> return_result = new ArrayList<>();
+
+        Query query = QueryFactory.create(sparqlQuery);
+        QueryExecution qe = QueryExecutionFactory.create(query, model);
+        ResultSet results = qe.execSelect();
+
+        while(results.hasNext()){
+            QuerySolution qs = results.nextSolution();
+            RDFNode temp = qs.get(parameter);
+            RDFNode temp_id = qs.get(id);
+            if(!temp.toString().equals("(null)")) {
+                result.add(temp.toString());
+                ids.add(temp_id.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", ""));
+            }
+        }
+
+        for(int i=0; i<ids.size(); i++){
+            System.out.println(result.get(i) + " " + ids.get(i));
+        }
+
+        qe.close();
+
+        return_result.add(result);
+        return_result.add(ids);
+
+        return return_result;
+    }
+
+
+    public ArrayList<List> getSemanticResults(String search){
+
+
+
+        return null;
     }
 }
