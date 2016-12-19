@@ -160,6 +160,7 @@ public class CreatePopulation {
                 newTrack.addLiteral(hasTitle, subObj.get("Title"));
                 newTrack.addLiteral(hasLength, subObj.get("Length"));
                 newTrack.addLiteral(hasNumber, subObj.get("Number"));
+                newTrack.addLiteral(hasID, trackID);
 
                 // Object Properties
                 newTrack.addProperty(isTrackOf, model.getIndividual(nameSpace+subObj.get("AlbumID")));
@@ -177,7 +178,7 @@ public class CreatePopulation {
 
         // JENA doesn't support OWL files
         model = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM);
-        model.read("project.owl", "RDF/XML");
+        model.read("data/project.owl", "RDF/XML");
 
         // get classes
         person = model.getOntClass(nameSpace + "Person");
@@ -207,9 +208,9 @@ public class CreatePopulation {
         isTrackOf = model.createProperty(nameSpace, "isTrackOf");
 
         // json files
-        String dic_artists = "artists.json";
-        String dic_albums = "albuns.json";
-        String dic_tracks = "tracks.json";
+        String dic_artists = "data/artists.json";
+        String dic_albums = "data/albuns.json";
+        String dic_tracks = "data/tracks.json";
 
         create_artists(dic_artists);
         create_albums(dic_albums);
@@ -218,7 +219,7 @@ public class CreatePopulation {
         // Save the changes
         OutputStream out;
         try {
-            out = new FileOutputStream("PopulatedProject.owl");
+            out = new FileOutputStream("data/PopulatedProject.owl");
             model.write(out, "RDF/XML");
         }catch (FileNotFoundException e){
             e.printStackTrace();
