@@ -16,16 +16,19 @@ public class Search extends HttpServlet {
         QueryManager qm = new QueryManager();
 
         //  Artists
-        ArrayList<String> artists = qm.getArtistByName(search);
-        request.setAttribute("artists", artists);
+        ArrayList<ArrayList<String>> artists = qm.getArtistByName(search);
+        request.setAttribute("artists", artists.get(0));
+        request.setAttribute("artists_id", artists.get(1));
 
         //  Albums
-        ArrayList<String> albums = qm.getAlbumsByTitle(search);
-        request.setAttribute("albums", albums);
+        ArrayList<ArrayList<String>> albums = qm.getAlbumsByTitle(search);
+        request.setAttribute("albums", albums.get(0));
+        request.setAttribute("albums_id", albums.get(1));
 
         //  Tracks
-        ArrayList<String> tracks = qm.getTracksByTitle(search);
-        request.setAttribute("tracks", tracks);
+        ArrayList<ArrayList<String>> tracks = qm.getTracksByTitle(search);
+        request.setAttribute("tracks", tracks.get(0));
+        request.setAttribute("tracks_id", tracks.get(1));
 
         qm.closeConnections();
         RequestDispatcher view=request.getRequestDispatcher("search.jsp");

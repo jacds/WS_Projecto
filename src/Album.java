@@ -18,10 +18,11 @@ public class Album extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         QueryManager qm = new QueryManager();
-        ArrayList<String> result = qm.getAlbums();
+        ArrayList<ArrayList<String>> result = qm.getAlbums();
         qm.closeConnections();
 
-        request.setAttribute("result", result);
+        request.setAttribute("result", result.get(0));
+        request.setAttribute("id", result.get(1));
         RequestDispatcher view=request.getRequestDispatcher("albumList.jsp");
         view.forward(request,response);
     }

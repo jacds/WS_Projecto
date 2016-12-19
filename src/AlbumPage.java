@@ -21,13 +21,15 @@ public class AlbumPage extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name").replace("+"," ");
+        String id = request.getParameter("id");
 
         QueryManager qm = new QueryManager();
-        ArrayList<ArrayList<String>> result = qm.getAlbumInfo(name);
+        ArrayList<ArrayList<String>> result = qm.getAlbumInfo(name, id);
         ArrayList<String> albumInfo = result.get(0);
         ArrayList<String> tracksNumber = result.get(1);
         ArrayList<String> tracksTitle = result.get(2);
         ArrayList<String> tracksLength = result.get(3);
+        ArrayList<String> tracksId = result.get(4);
 
         for(int i=0; i<tracksLength.size(); i++){
             LocalTime timeOfDay = LocalTime.ofSecondOfDay(Integer.parseInt(tracksLength.get(i)));
@@ -38,6 +40,7 @@ public class AlbumPage extends HttpServlet {
         request.setAttribute("number", tracksNumber);
         request.setAttribute("title", tracksTitle);
         request.setAttribute("length", tracksLength);
+        request.setAttribute("tracks_id", tracksId);
         RequestDispatcher view=request.getRequestDispatcher("albumPage.jsp");
         view.forward(request,response);
 

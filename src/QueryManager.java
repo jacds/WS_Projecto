@@ -27,18 +27,49 @@ public class QueryManager {
         dataset.close();
     }
 
-    //getArtists
-    public ArrayList<String> getArtists(){
-        String sparqlQuery = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name} ORDER BY ?name";
+    private ArrayList<ArrayList<String>> executeIDQuery(String sparqlQuery, String parameter, String id){
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
+        ArrayList<ArrayList<String>> return_result = new ArrayList<>();
 
-        return executeQuery(sparqlQuery, "name");
+        Query query = QueryFactory.create(sparqlQuery);
+        QueryExecution qe = QueryExecutionFactory.create(query, model);
+        ResultSet results = qe.execSelect();
+
+        while(results.hasNext()){
+            QuerySolution qs = results.nextSolution();
+            RDFNode temp = qs.get(parameter);
+            RDFNode temp_id = qs.get(id);
+            if(!temp.toString().equals("(null)")) {
+                result.add(temp.toString());
+                ids.add(temp_id.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", ""));
+            }
+        }
+
+        for(int i=0; i<ids.size(); i++){
+            System.out.println(result.get(i) + " " + ids.get(i));
+        }
+
+        qe.close();
+
+        return_result.add(result);
+        return_result.add(ids);
+
+        return return_result;
     }
 
-    public ArrayList<String> getArtistByName(String name){
-        name = name.toLowerCase();
-        String sparqlQuery = "SELECT ?name WHERE {?x <" + nameSpace + "hasName> ?name . FILTER(STRSTARTS(lcase(?name),\"" + name + "\"))}";
+    //getArtists
+    public ArrayList<ArrayList<String>> getArtists(){
+        String sparqlQuery = "SELECT ?name ?id WHERE {?x <" + nameSpace + "hasName> ?name. ?x <" + nameSpace + "hasID> ?id} ORDER BY ?name";
 
-        return executeQuery(sparqlQuery, "name");
+        return executeIDQuery(sparqlQuery, "name", "id");
+    }
+
+    public ArrayList<ArrayList<String>> getArtistByName(String name){
+        name = name.toLowerCase();
+        String sparqlQuery = "SELECT ?name ?id WHERE {?x <" + nameSpace + "hasName> ?name . ?x <" + nameSpace + "hasID> ?id . FILTER(STRSTARTS(lcase(?name),\"" + name + "\"))}";
+
+        return executeIDQuery(sparqlQuery, "name", "id");
     }
     //getArtistInfo
         //hasName
@@ -52,41 +83,39 @@ public class QueryManager {
         //hasLastFMPage
         //hasAlbum
             //hasTitle
-    public ArrayList<ArrayList<String>> getArtistInfo(String name) {
+    public ArrayList<ArrayList<String>> getArtistInfo(String name, String id) {
         ArrayList<String> result = new ArrayList<>();
         result.add(name);
 
-        name = name.toLowerCase();
-
         //  Gender
-        String gender = getSingleInfo(name, "hasName", "hasGender");
+        String gender = getSingleInfo(id, "hasID", "hasGender");
         result.add(gender);
 
         //  Dates
         String beginDate, endDate;
         if(gender != null){
-            beginDate = getSingleInfo(name, "hasName", "hasBornDate");
-            endDate = getSingleInfo(name, "hasName", "hasDeathDate");
+            beginDate = getSingleInfo(id, "hasID", "hasBornDate");
+            endDate = getSingleInfo(id, "hasID", "hasDeathDate");
         }
         else{
-            beginDate = getSingleInfo(name, "hasName", "hasBeginDate");
-            endDate = getSingleInfo(name, "hasName", "hasEndDate");
+            beginDate = getSingleInfo(id, "hasID", "hasBeginDate");
+            endDate = getSingleInfo(id, "hasID", "hasEndDate");
         }
         result.add(beginDate);
         result.add(endDate);
 
         //  Location
-        String location = getSingleInfo(name, "hasName", "hasLocation");
+        String location = getSingleInfo(id, "hasID", "hasLocation");
         result.add(location);
 
         //  Description
-        String description = getSingleInfo(name, "hasName", "hasDescription");
+        String description = getSingleInfo(id, "hasID", "hasDescription");
         int index = (description.contains("<a"))? description.indexOf("<a") : 0;
         description = description.substring(0, index) + " (...)";
         result.add(description);
 
         //  LastFM Page
-        String lastFM = getSingleInfo(name, "hasName", "hasLastFMPage");
+        String lastFM = getSingleInfo(id, "hasID", "hasLastFMPage");
         result.add(lastFM);
 
         // result = {name, gender, beginDate, endDate, location, description, lastFM};
@@ -94,10 +123,10 @@ public class QueryManager {
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         results.add(result);
 
-        //  result = {album1, album2, ...}
-
-        result = getArtistAlbums(name);
-        results.add(result);
+        //  albums = {{album1, album2, ...},{id_album1, id_album2, ...}}
+        ArrayList<ArrayList<String>> albums = getArtistAlbums(id);
+        results.add(albums.get(0));
+        results.add(albums.get(1));
 
         return results;
     }
@@ -117,33 +146,30 @@ public class QueryManager {
         }
     }
 
-    public ArrayList<String> getArtistAlbums(String name){
-        String artistID = getSingleInfo(name, "hasName", "hasID");
-        artistID = artistID.replace("^^http://www.w3.org/2001/XMLSchema#integer", "");
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?album WHERE { ?x :isAlbumOf :"+ artistID +". ?x :hasTitle ?album} ORDER BY ?album";
+    public ArrayList<ArrayList<String>> getArtistAlbums(String id){
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?album ?id WHERE { ?x :isAlbumOf :"+ id +". ?x :hasTitle ?album . ?x :hasID ?id} ORDER BY ?album";
 
-        return executeQuery(sparqlQuery, "album");
+        return executeIDQuery(sparqlQuery, "album", "id");
     }
 
     //getAlbums
-    public ArrayList<String> getAlbums(){
-        ArrayList<String> result = new ArrayList<>();
+    public ArrayList<ArrayList<String>> getAlbums(){
         String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-                "SELECT DISTINCT ?title\n" +
+                "SELECT DISTINCT ?title ?id\n" +
                 "WHERE {\n" +
                 "  ?s rdf:type <"+nameSpace+"Album>.\n" +
-                " ?s <"+nameSpace+"hasTitle> ?title "+
-                "}" +
+                " ?s <"+nameSpace+"hasTitle> ?title ."+
+                " ?s <"+nameSpace+"hasID> ?id}" +
                 "ORDER BY ?title";
 
-        return executeQuery(sparqlQuery, "title");
+        return executeIDQuery(sparqlQuery, "title", "id");
     }
 
-    public ArrayList<String> getAlbumsByTitle(String title){
+    public ArrayList<ArrayList<String>> getAlbumsByTitle(String title){
         title = title.toLowerCase();
-        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title WHERE {?x rdf:type <" + nameSpace + "Album>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
+        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT ?title ?id WHERE {?x rdf:type <" + nameSpace + "Album>. ?x <" + nameSpace + "hasTitle> ?title . ?x <" + nameSpace + "hasID> ?id . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
 
-        return executeQuery(sparqlQuery, "title");
+        return executeIDQuery(sparqlQuery, "title", "id");
     }
 
     //getAlbumInfo
@@ -156,7 +182,7 @@ public class QueryManager {
             //hasTitle
             //hasNumber
             //hasLength
-    public ArrayList<ArrayList<String>> getAlbumInfo(String title){
+    public ArrayList<ArrayList<String>> getAlbumInfo(String title, String id){
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         ArrayList<String> result = new ArrayList<>();
 
@@ -166,42 +192,40 @@ public class QueryManager {
         title = title.toLowerCase();
 
         //  Artist
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?artist WHERE { ?x :isAlbumOf ?y. ?x :hasTitle ?z . ?y :hasName ?artist FILTER(lcase(str(?z)) =\"" + title + "\")}";
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?artist ?id WHERE {:" + id + " :isAlbumOf ?y. ?y :hasName ?artist . ?y :hasID ?id}";
         String artist = executeQuery(sparqlQuery, "artist").get(0);
         result.add(artist);
 
         //  Image
-        String image = getSingleInfo(title, "hasTitle", "hasImage");
+        String image = getSingleInfo(id, "hasID", "hasImage");
         result.add(image);
 
         //  Description
-        String description = getSingleInfo(title, "hasTitle", "hasDescription");
+        String description = getSingleInfo(id, "hasID", "hasDescription");
         int index = (description.contains("<a"))? description.indexOf("<a") : 0;
         description = description.substring(0, index) + " (...)";
         result.add(description);
 
         //  LastFMPage
-        String lastFM = getSingleInfo(title, "hasTitle", "hasLastFMPage");
+        String lastFM = getSingleInfo(id, "hasID", "hasLastFMPage");
         result.add(lastFM);
 
         //result = {title, artist, image, description, lastfm}
         results.add(result);
 
         //  Tracks
-        ArrayList<ArrayList<String>> tracks = getAlbumTracks(title);
+        // {number1, title1, length1, id1, number2, title2, length2, id2, ...}
+        ArrayList<ArrayList<String>> tracks = getAlbumTracks(id);
         for (ArrayList<String> list: tracks ) {
             results.add(list);
         }
 
-        //result = {number1, title1, length1, number2, title2, length2, ...}
-        results.add(result);
-
         return results;
     }
 
-    private ArrayList<ArrayList<String>> getAlbumTracks(String title){
+    private ArrayList<ArrayList<String>> getAlbumTracks(String id){
         ArrayList<ArrayList<String>> result = new ArrayList<>();
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?track ?number ?length WHERE { ?x :isTrackOf ?y. ?y :hasTitle ?z . ?x :hasTitle ?track . ?x :hasNumber ?number. ?x :hasLength ?length FILTER(lcase(str(?z)) =\"" + title +"\")}";
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?track ?number ?length ?id WHERE { ?id :isTrackOf :" + id + ". ?id :hasTitle ?track . ?id :hasNumber ?number. ?id :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
         QueryExecution qe = QueryExecutionFactory.create(query, model);
@@ -225,6 +249,9 @@ public class QueryManager {
             // Track Length
             temp = qs.get("length");
             aux.add(temp.toString());
+            // Track ID
+            temp = qs.get("id");
+            aux.add(temp.toString().replace("http://www.semanticweb.org/rocha/ontologies/SemanticMusic#", ""));
         }
 
         Collections.sort(sortingArray.subList(0, sortingArray.size()));
@@ -232,32 +259,39 @@ public class QueryManager {
         ArrayList<String> number = new ArrayList<>();
         ArrayList<String> name = new ArrayList<>();
         ArrayList<String> length = new ArrayList<>();
+        ArrayList<String> ids = new ArrayList<>();
 
         for (Integer var: sortingArray) {
             index = aux.indexOf(String.valueOf(var));
             number.add(aux.get(index));
             name.add(aux.get(index+1));
             length.add(aux.get(index+2));
+            ids.add(aux.get(index+3));
         }
 
         qe.close();
 
+        for(int i=0; i<ids.size(); i++){
+            System.out.println(name.get(i) + " " + ids.get(i));
+        }
+
         result.add(number);
         result.add(name);
         result.add(length);
+        result.add(ids);
 
         return result;
     }
 
-    public ArrayList<String> getTracksByTitle(String title){
+    public ArrayList<ArrayList<String>> getTracksByTitle(String title){
         title = title.toLowerCase();
-        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?title WHERE {?x rdf:type <" + nameSpace + "Track>. ?x <" + nameSpace + "hasTitle> ?title . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
+        String sparqlQuery = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> SELECT DISTINCT ?title ?id WHERE {?x rdf:type <" + nameSpace + "Track>. ?x <" + nameSpace + "hasTitle> ?title . ?x <" + nameSpace + "hasID> ?id . FILTER(STRSTARTS(lcase(?title),\"" + title + "\"))}";
 
-        return executeQuery(sparqlQuery, "title");
+        return executeIDQuery(sparqlQuery, "title", "id");
     }
 
-    public ArrayList<ArrayList<String>> getTrackInfo(String title){
-        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE { ?x :isTrackOf ?y. ?x :hasTitle \"" + title + "\". ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .?x :hasNumber ?number. ?x :hasLength ?length}";
+    public ArrayList<ArrayList<String>> getTrackInfo(String title, String id){
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE {:"+id + " :isTrackOf ?y. ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .:" + id + " :hasNumber ?number. :" + id + " :hasLength ?length}";
 
         Query query = QueryFactory.create(sparqlQuery);
         QueryExecution qe = QueryExecutionFactory.create(query, model);

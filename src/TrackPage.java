@@ -18,8 +18,9 @@ public class TrackPage extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name = request.getParameter("name").replace("+"," ");
+        String id = request.getParameter("id");
         QueryManager qm = new QueryManager();
-        ArrayList<ArrayList<String>> results = qm.getTrackInfo(name);
+        ArrayList<ArrayList<String>> results = qm.getTrackInfo(name, id);
         String title = results.get(0).get(0);
         ArrayList<String> album = results.get(1);
         ArrayList<String> artist = results.get(2);
