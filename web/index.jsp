@@ -43,6 +43,12 @@
                     </button>
                   </span>
                 </div>
+                <div align="right">
+                  <select name="searchType">
+                    <option value="keyword">Keyword Based</option>
+                    <option value="semantic">Semantic</option>
+                  </select>
+                </div>
               </form>
               <!-- /input-group -->
             </li>
