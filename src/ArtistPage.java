@@ -32,7 +32,7 @@ public class ArtistPage extends HttpServlet {
 
         request.setAttribute("result", artistInfo);
         request.setAttribute("albums", artistAlbums);
-        request.setAttribute("albums_id", result.get(2));
+        request.setAttribute("albumsID", result.get(2));
         RequestDispatcher view=request.getRequestDispatcher("artistPage.jsp");
         view.forward(request,response);
     }

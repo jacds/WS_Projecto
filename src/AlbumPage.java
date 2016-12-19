@@ -40,7 +40,7 @@ public class AlbumPage extends HttpServlet {
         request.setAttribute("number", tracksNumber);
         request.setAttribute("title", tracksTitle);
         request.setAttribute("length", tracksLength);
-        request.setAttribute("tracks_id", tracksId);
+        request.setAttribute("tracksID", tracksId);
         RequestDispatcher view=request.getRequestDispatcher("albumPage.jsp");
         view.forward(request,response);
 
