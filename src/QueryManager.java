@@ -193,7 +193,9 @@ public class QueryManager {
 
         //  Artist
         String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT ?artist ?id WHERE {:" + id + " :isAlbumOf ?y. ?y :hasName ?artist . ?y :hasID ?id}";
-        String artist = executeQuery(sparqlQuery, "artist").get(0);
+        ArrayList<ArrayList<String>> temp = executeIDQuery(sparqlQuery, "artist", "id");
+        String artist = temp.get(0).get(0);
+        String artistID = temp.get(1).get(0);
         result.add(artist);
 
         //  Image
@@ -210,7 +212,10 @@ public class QueryManager {
         String lastFM = getSingleInfo(id, "hasID", "hasLastFMPage");
         result.add(lastFM);
 
-        //result = {title, artist, image, description, lastfm}
+        //  Add artist ID
+        result.add(artistID);
+
+        //result = {title, artist, image, description, lastfm, id}
         results.add(result);
 
         //  Tracks
