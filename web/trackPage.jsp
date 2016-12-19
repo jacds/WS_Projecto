@@ -74,8 +74,8 @@
             </div>
             <!-- /.row -->
             <c:forEach items="${album}" var="item" varStatus="status">
-                <label>Album: </label> <a href="/AlbumPage?name=${album[status.index].replace(" ","+")}"> ${album[status.index]} </a> <br/>
-                <label>Artist: </label> <a href="/ArtistPage?name=${artist[status.index].replace(" ","+")}"> ${artist[status.index]} </a> <br/>
+                <label>Album: </label> <a href="/AlbumPage?name=${album[status.index].replace(" ","+")}&id=${albumID[status.index]}"> ${album[status.index]} </a> <br/>
+                <label>Artist: </label> <a href="/ArtistPage?name=${artist[status.index].replace(" ","+")}&id=${artistID[status.index]}"> ${artist[status.index]} </a> <br/>
                 <label>Number: </label> ${number[status.index]} <br/>
                 <label>Length: </label> ${length[status.index]} <br/> <br/>
             </c:forEach>

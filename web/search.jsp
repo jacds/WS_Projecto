@@ -74,16 +74,16 @@
             </div>
             <!-- /.row -->
             <h3>Artists </h3>
-            <c:forEach items="${artists}" var="item">
-                <a href="/ArtistPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            <c:forEach items="${artists}" var="item" varStatus="status">
+                <a href="/ArtistPage?name=${artists[status.index].replace(" ","+")}&id=${artistsID[status.index]}"> ${item} </a> <br />
             </c:forEach>
             <br/><h3 >Albums </h3>
-            <c:forEach items="${albums}" var="item">
-                <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            <c:forEach items="${albums}" var="item" varStatus="status">
+                <a href="/AlbumPage?name=${albums[status.index].replace(" ","+")}&id=${albumsID[status.index]}"> ${item} </a> <br />
             </c:forEach>
             <br/><h3>Tracks </h3>
-            <c:forEach items="${tracks}" var="item">
-                <a href="/TrackPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            <c:forEach items="${tracks}" var="item" varStatus="status">
+                <a href="/TrackPage?name=${tracks[status.index].replace(" ","+")}&id=${tracksID[status.index]}"> ${item} </a> <br />
             </c:forEach>
         </div>
         <!-- /.container-fluid -->

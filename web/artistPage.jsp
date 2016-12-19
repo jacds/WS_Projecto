@@ -80,8 +80,8 @@
             <label>Summary: </label> ${result[5]} <br/>
             <br/><label>See more at: </label> <a href="${result[6]}">LastFM Page</a> <br/>
             <br/><label>Albums: </label> <br/>
-            <c:forEach items="${albums}" var="item">
-                <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            <c:forEach items="${albums}" var="item" varStatus="status">
+                <a href="/AlbumPage?name=${albums[status.index].replace(" ","+")}&id=${albumsID[status.index]}"> ${albums[status.index]} </a> <br />
             </c:forEach>
 
         </div>

@@ -36,6 +36,8 @@ public class AlbumPage extends HttpServlet {
             tracksLength.set(i, timeOfDay.toString());
         }
 
+        System.out.println(albumInfo.isEmpty() || tracksNumber.isEmpty() || tracksTitle.isEmpty() || tracksLength.isEmpty() || tracksId.isEmpty());
+
         request.setAttribute("result", albumInfo);
         request.setAttribute("number", tracksNumber);
         request.setAttribute("title", tracksTitle);

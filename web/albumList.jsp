@@ -73,8 +73,8 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <c:forEach items="${result}" var="item">
-                <a href="/AlbumPage?name=${item.replace(" ","+")}"> ${item} </a> <br />
+            <c:forEach items="${result}" var="item" varStatus="status">
+                <a href="/AlbumPage?name=${result[status.index].replace(" ","+")}&id=${id[status.index]}"> ${result[status.index]} </a> <br />
             </c:forEach>
         </div>
         <!-- /.container-fluid -->

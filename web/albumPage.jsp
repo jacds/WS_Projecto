@@ -13,7 +13,7 @@
     <script src="sbadmin2/vendor/bootstrap/js/bootstrap.min.js"></script>
 
 
-    <title>Artist Page</title>
+    <title>Album Page</title>
 </head>
 <body>
 <!---->
@@ -75,12 +75,12 @@
             <!-- /.row -->
             <img src="${result[2]}" alt="Album Cover" class="img-thumbnail">
              ${item} </a> <br />
-            <br/><br/><label>Artist: </label> <a href="/ArtistPage?name=${result[1].replace(" ","+")}"> ${result[1]} </a> <br/>
+            <br/><br/><label>Artist: </label> <a href="/ArtistPage?name=${result[1].replace(" ","+")}&id=${result[5]}"> ${result[1]} </a> <br/>
             <label>Description: </label> ${result[3]} <br/>
             <br/><label>See more at: </label> <a href="${result[4]}">LastFM Page</a> <br/>
             <br/><label>Tracks: </label> <br/>
             <c:forEach items="${number}" var="item" varStatus="status">
-                <strong>${number[status.index]}</strong> <a href="/TrackPage?name=${title[status.index].replace(" ","+")}"> ${title[status.index]} </a> ${length[status.index]} <br />
+                <strong>${number[status.index]}</strong> <a href="/TrackPage?name=${title[status.index].replace(" ","+")}&id=${tracksID[status.index]}"> ${title[status.index]} </a> ${length[status.index]} <br />
             </c:forEach>
 
         </div>
