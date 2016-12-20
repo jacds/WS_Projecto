@@ -460,7 +460,7 @@ public class QueryManager {
             try{
                 searchParameter = searchValues.get(0).toLowerCase();
             }catch (Exception e){
-                searchParameter = "";
+                searchParameter = "\"\"";
             }
             String sparqlQuery = null;
 

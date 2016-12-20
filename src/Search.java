@@ -39,12 +39,18 @@ public class Search extends HttpServlet {
         }
 
         else{
-            ArrayList<ArrayList<String>> results = qm.getSemanticResults(search);
-            request.setAttribute("results", results.get(0));
-            request.setAttribute("resultsID", results.get(1));
-            request.setAttribute("type", results.get(2).get(0));
+            try{
+                ArrayList<ArrayList<String>> results = qm.getSemanticResults(search);
+                request.setAttribute("results", results.get(0));
+                request.setAttribute("resultsID", results.get(1));
+                request.setAttribute("type", results.get(2).get(0));
+                page = "semanticsearch.jsp";
+            }catch (Exception e){
+                page = "index.jsp";
+            }
 
-            page = "semanticsearch.jsp";
+
+
         }
 
         qm.closeConnections();
