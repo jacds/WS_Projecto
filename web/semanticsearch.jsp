@@ -79,8 +79,9 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <c:forEach items="${results}" var="item">
-                 ${item} <br />
+            <c:forEach items="${results}" var="item" varStatus="status">
+                <a href="/${type}Page?name=${results[status.index].replace(" ","+")}&id=${resultsID[status.index]}"> ${item}</a> <br />
+
             </c:forEach>
         </div>
         <!-- /.container-fluid -->
