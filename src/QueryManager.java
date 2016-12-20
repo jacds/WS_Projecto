@@ -456,7 +456,12 @@ public class QueryManager {
             //System.out.println(searchValues);
 
             String property = listClassProperties.entrySet().iterator().next().getKey();
-            String searchParameter = searchValues.get(0).toLowerCase();
+            String searchParameter;
+            try{
+                searchParameter = searchValues.get(0).toLowerCase();
+            }catch (Exception e){
+                searchParameter = "";
+            }
             String sparqlQuery = null;
 
             String parameter1, parameter2;
