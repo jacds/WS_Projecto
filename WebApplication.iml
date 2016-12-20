@@ -24,5 +24,6 @@
     <orderEntry type="library" name="jena" level="project" />
     <orderEntry type="library" name="taglibs-standard-compat-1.2.5" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="info.debatty:java-string-similarity:0.21" level="project" />
   </component>
 </module>

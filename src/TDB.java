@@ -2,6 +2,7 @@ import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.util.FileManager;
+import info.debatty.java.stringsimilarity.*;
 
 //TODO GET ARTIST PHOTO FROM LASTFM API
 public class TDB {
@@ -26,7 +27,7 @@ public class TDB {
 
         //createTDB();
         //LOAD TRIPLE STORE
-        Dataset dataset = TDBFactory.createDataset("./tdb");
+        /*Dataset dataset = TDBFactory.createDataset("./tdb");
         //model can be queried with SPARQL
         Model model = dataset.getDefaultModel();
 
@@ -42,7 +43,18 @@ public class TDB {
         }
 
         model.close();
-        dataset.close();
+        dataset.close();*/
+
+        //double distance = new Jaccard().similarity("track", "tracks");
+        //double distance = new NormalizedLevenshtein().distance("album", "trcks");
+        //System.out.println(distance);
+
+        //QueryManager qm = new QueryManager();
+        //qm.getSemanticResults("tracks of \"Muse\"");
+        //qm.getSemanticResults("female artists");
+        //qm.getSemanticResults("male artists");
+        //qm.getSemanticResults("artists dead \"2016\"");
+
     }
 
 }
