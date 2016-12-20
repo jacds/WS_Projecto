@@ -385,7 +385,7 @@ public class QueryManager {
     //  SEMANTIC SEARCH PART
     public ArrayList<ArrayList<String>> getSemanticResults(String search){
         try {
-            ArrayList<ArrayList<String>> results = new ArrayList<>();
+            ArrayList<ArrayList<String>> results;
             ArrayList<String> searchClasses = new ArrayList<>();
             String temp1, temp2;
 
@@ -460,6 +460,7 @@ public class QueryManager {
             String sparqlQuery = null;
 
             String parameter1, parameter2;
+            ArrayList<String> type = new ArrayList<>();
             if (searchClasses.contains("Album") || searchClasses.contains("Track")) {
                 parameter1 = "hasTitle";
                 parameter2 = (searchClasses.contains("Album")) ? "hasName" : "hasTitle";
@@ -475,7 +476,10 @@ public class QueryManager {
                 sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?x :" + property + " ?y. ?x :" + parameter1 + "?parameter . ?x :hasID ?parameterID." + parameter2;
             }
 
+            type.add(searchClasses.get(0));
             results = executeIDQuery(sparqlQuery, "parameter", "parameterID");
+            //System.out.println(type);
+            results.add(type);
 
 
             return results;
