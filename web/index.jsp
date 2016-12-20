@@ -45,8 +45,8 @@
                 </div>
                 <div align="right">
                   <select name="searchType">
-                    <option value="keyword">Keyword Based</option>
                     <option value="semantic">Semantic</option>
+                    <option value="keyword">Keyword Based</option>
                   </select>
                 </div>
               </form>

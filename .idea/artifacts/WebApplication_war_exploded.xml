@@ -10,6 +10,8 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="jena" />
           <element id="library" level="project" name="org.json:json:20160810" />
+          <element id="library" level="project" name="info.debatty:java-string-similarity:0.21" />
+          <element id="library" level="project" name="taglibs-standard-compat-1.2.5" />
         </element>
       </element>
     </root>
