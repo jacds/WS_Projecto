@@ -173,6 +173,15 @@
     
 
 
+    <!-- http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasDate -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasDate">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#Album"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasDeathDate -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasDeathDate">
@@ -211,6 +220,22 @@
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasGender">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#Person"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasGenres -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#hasGenres">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#Album"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/rocha/ontologies/SemanticMusic#Artist"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:DatatypeProperty>
     
