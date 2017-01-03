@@ -3,7 +3,7 @@ import requests
 import musicbrainzngs
 import json
 
-ID = 0
+ID = 175
 
 api_key = "a8957e6fbc07c4b79dec968535bf1a4a"
 
@@ -91,7 +91,7 @@ for i,v in bands.items():
 	print(bands[i]['Name'] + " INFO RETRIEVED")
 
 with open('../data/artists.json', 'w') as outfile:
-    json.dump(bands, outfile)
+    json.dump(bands, outfile)'''
 
 with open('../data/artists.json') as data_file:    
     bands = json.load(data_file)
@@ -164,7 +164,7 @@ for i,v in albuns.items():
 	print("Album "+albuns[i]['Title']+" by "+albuns[i]['Artist']+ " RETRIEVED")
 
 with open('../data/albuns.json', 'w') as outfile:
-    json.dump(albuns, outfile)'''
+    json.dump(albuns, outfile)
 
 
 with open('../data/albuns.json') as data_file:    
