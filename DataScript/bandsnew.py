@@ -100,10 +100,10 @@ data_file.close()
 
 albuns = {}
 
-#GET TOP ALBUNS FROM ARTISTS
+#GET 15 TOP ALBUNS FROM ARTISTS
 for i,v in bands.items():
 	chosen = bands[i]['Name'].replace(" ", "+")
-	topalbuns = requests.get('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist='+chosen+'&api_key='+api_key)
+	topalbuns = requests.get('http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&artist='+chosen+'&api_key='+api_key+'&limit=15')
 	tree = ET.fromstring(topalbuns.content)
 	for child in tree:
 		for album in child:
@@ -121,8 +121,8 @@ for i,v in bands.items():
 			else:
 				albuns[ID]['MBID'] = "None"
 			ID+=1
-	print(bands[i]['Name'] + " ALBUNS RETRIEVED")
-
+	print(ID)
+print("ALBUM INFO")
 #GET ALBUM INFO
 for i,v in albuns.items():
 	albuns[i]['Image'] = "None"
@@ -161,7 +161,7 @@ for i,v in albuns.items():
 					albuns[i]['Description'] = wiki.text
 				else:
 					albuns[i]['Description'] = "None"
-	print("Album "+albuns[i]['Title']+" by "+albuns[i]['Artist']+ " RETRIEVED")
+	print(albuns[i]['Title'])
 
 with open('../data/albuns.json', 'w') as outfile:
     json.dump(albuns, outfile)
@@ -171,8 +171,7 @@ with open('../data/albuns.json') as data_file:
     albuns = json.load(data_file)
 
 data_file.close()
-
-ID = 8657
+print("TRACKS INFO")
 tracks = {}
 #GET TRACKS FOR ALL THE ALBUMS
 for i,v in albuns.items():
@@ -194,7 +193,7 @@ for i,v in albuns.items():
 				tracks[ID]['AlbumID'] = albuns[i]['ID']
 				tracks[ID]['Length'] = length
 				ID+=1
-	print ("Album "+albuns[i]['Title'] + " by " + albuns[i]['Artist'] + " COMPLETED")
+	print (ID)
 
 with open('../data/tracks.json', 'w') as outfile:
     json.dump(tracks, outfile)
