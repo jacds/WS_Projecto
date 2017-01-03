@@ -1,7 +1,3 @@
-/**
- * Created by Asus on 01-12-2016.
- */
-
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
@@ -41,6 +37,7 @@ public class CreatePopulation {
     private static Property hasGender;
     private static Property hasLocation;
     private static Property hasID;
+    private static Property hasGenres;
     // Object Properties
     private static Property isAlbumOf;
     private static Property isTrackOf;
@@ -83,11 +80,25 @@ public class CreatePopulation {
                     newArtist.addLiteral(hasBeginDate, subObj.get("BeginDate"));
                     newArtist.addLiteral(hasEndDate, subObj.get("EndDate"));
                 }
+
+
+                JSONArray genres = (JSONArray) subObj.get("Genres");
+                String genresString = "";
+                //System.out.println("GENRES " + genres.length());
+                for(int i=0; i<genres.length(); i++){
+                    genresString += genres.get(i);
+                    genresString += ",";
+                }
+
+                //System.out.println(genresString.split(",").length);
+
+                newArtist.addLiteral(hasGenres, genresString);
                 newArtist.addLiteral(hasDescription, subObj.get("Description"));
                 newArtist.addLiteral(hasLastFMPage, subObj.get("URL"));
                 newArtist.addLiteral(hasName, subObj.get("Name"));
                 newArtist.addLiteral(hasLocation, subObj.get("Location"));
                 newArtist.addLiteral(hasID, subObj.get("ID"));
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -203,6 +214,7 @@ public class CreatePopulation {
         hasGender = model.createProperty(nameSpace, "hasGender");
         hasLocation = model.createProperty(nameSpace, "hasLocation");
         hasID = model.createProperty(nameSpace, "hasID");
+        hasGenres = model.createProperty(nameSpace, "hasGenres");
         // Object Properties
         isAlbumOf = model.createProperty(nameSpace, "isAlbumOf");
         isTrackOf = model.createProperty(nameSpace, "isTrackOf");
