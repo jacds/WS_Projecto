@@ -363,12 +363,13 @@ public class QueryManager {
             QuerySolution qs = results.nextSolution();
             RDFNode temp = qs.get(parameter);
             RDFNode temp_id = qs.get(id);
-            if(!temp.toString().equals("(null)")) {
+            if(!temp.toString().equals("(null)") && !result.contains(temp.toString())) {
                 result.add(temp.toString());
                 ids.add(temp_id.toString().replace("^^http://www.w3.org/2001/XMLSchema#integer", ""));
             }
         }
 
+        System.out.println("IDS: " + ids.size());
         for(int i=0; i<ids.size(); i++){
             System.out.println(result.get(i) + " " + ids.get(i));
         }
