@@ -7,7 +7,7 @@ ID = 0
 
 api_key = "a8957e6fbc07c4b79dec968535bf1a4a"
 
-bands = {}
+'''bands = {}
 
 #GET TOP ARTISTS
 for i in range(2,5):
@@ -164,7 +164,7 @@ for i,v in albuns.items():
 	print("Album "+albuns[i]['Title']+" by "+albuns[i]['Artist']+ " RETRIEVED")
 
 with open('../data/albuns.json', 'w') as outfile:
-    json.dump(albuns, outfile)
+    json.dump(albuns, outfile)'''
 
 
 with open('../data/albuns.json') as data_file:    
@@ -172,6 +172,7 @@ with open('../data/albuns.json') as data_file:
 
 data_file.close()
 
+ID = 8657
 tracks = {}
 #GET TRACKS FOR ALL THE ALBUMS
 for i,v in albuns.items():
