@@ -50,7 +50,13 @@ for i,v in bands.items():
 		if 'life-span' in information:
 			dates = information['life-span']
 			if (len(dates.values()) > 1):
-				bands[i]['EndDate'] = dates['end']
+				if (dates['ended'] == 'true'):
+					try:
+						bands[i]['EndDate'] = dates['end']
+					except:
+						bands[i]['EndDate'] = "None"
+				else:
+					bands[i]['EndDate'] = "None"
 				bands[i]['BeginDate'] = dates['begin']
 			elif (len(dates.values()) == 1):
 				bands[i]['EndDate'] = "None"
@@ -69,19 +75,25 @@ for i,v in bands.items():
 		bands[i]['Location'] = "None"
 	chosen = bands[i]['Name'].replace(" ", "+")
 	artist = requests.get('http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist='+chosen+'&api_key='+api_key)
+	spotify_artist = requests.get('https://api.spotify.com/v1/search?q='+chosen+"&type=artist").json()
+	bands[i]['Genres'] = spotify_artist['artists']['items'][0]['genres']
 	tree = ET.fromstring(artist.content)
 	for child in tree:
 		for artist in child:
+			if (artist.get('size') == "large"):
+				if (artist.text is not None):
+					bands[i]['Image'] = artist.text
 			for bio in artist.findall('summary'):
 				if (bio.text is not None):
 					bands[i]['Description'] = bio.text
 				else:
 					bands[i]['Description'] = bio.text
+	print(bands[i]['Name'] + " INFO RETRIEVED")
 
-with open('DataJSON/artists.json', 'w') as outfile:
+with open('../data/artists.json', 'w') as outfile:
     json.dump(bands, outfile)
 
-with open('DataJSON/artists.json') as data_file:    
+with open('../data/artists.json') as data_file:    
     bands = json.load(data_file)
 
 data_file.close()
@@ -131,6 +143,13 @@ for i,v in albuns.items():
 	artist = albuns[i]['Artist'].replace(" ","+")
 	title = albuns[i]['Title'].replace(" ", "+")
 	album = requests.get('http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key='+api_key+'&artist='+artist+'&album='+title)
+	spotify_album_search = requests.get('https://api.spotify.com/v1/search?q=album:'+title+'%20artist:'+artist+'&type=album').json()
+	try:
+		spotify_id = spotify_album_search['albums']['items'][0]['id']
+		spotify_album = requests.get('https://api.spotify.com/v1/albums/'+spotify_id).json()
+		albuns[i]['Date'] = spotify_album['release_date']
+	except:
+		albuns[i]['Genres'] = []
 	tree = ET.fromstring(album.content)
 	for child in tree:
 		for artist in child:
@@ -144,11 +163,11 @@ for i,v in albuns.items():
 					albuns[i]['Description'] = "None"
 	print("Album "+albuns[i]['Title']+" by "+albuns[i]['Artist']+ " RETRIEVED")
 
-with open('DataJSON/albuns.json', 'w') as outfile:
+with open('../data/albuns.json', 'w') as outfile:
     json.dump(albuns, outfile)
 
 
-with open('DataJSON/albuns.json') as data_file:    
+with open('../data/albuns.json') as data_file:    
     albuns = json.load(data_file)
 
 data_file.close()
@@ -176,10 +195,10 @@ for i,v in albuns.items():
 				ID+=1
 	print ("Album "+albuns[i]['Title'] + " by " + albuns[i]['Artist'] + " COMPLETED")
 
-with open('DataJSON/tracks.json', 'w') as outfile:
+with open('../data/tracks.json', 'w') as outfile:
     json.dump(tracks, outfile)
 
-with open('DataJSON/tracks.json') as data_file:    
+with open('../data/tracks.json') as data_file:    
     tracks = json.load(data_file)
 
 print(len(tracks))
