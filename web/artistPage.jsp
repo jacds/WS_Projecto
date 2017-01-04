@@ -81,7 +81,9 @@
             <!-- /.row -->
             <img src="${result[7]}" alt="Artist Picture" class="img-thumbnail">
             <br /><br/>
-            <label>Gender: </label> ${result[1]} <br/>
+            <c:if test="${not empty result[1]}">
+                <label>Gender: </label> ${result[1]} <br/>
+            </c:if>
             <label>Begin Date: </label> ${result[2]} <br/>
             <label>End Date: </label> ${result[3]} <br/>
             <label>Location: </label> ${result[4]} <br/>
