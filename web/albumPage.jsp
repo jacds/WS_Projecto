@@ -98,6 +98,8 @@
 
             <div>
                 <h3>Recommended Albuns</h3> <br/>
+                <div>
+               <!-- <label>By similar genres</label><br/>-->
                 <c:forEach items="${recommendedTitle}" var="item" varStatus="status">
                     <div class="col-lg-5 well">
                         <c:choose>
@@ -109,6 +111,23 @@
                             </c:otherwise>
                         </c:choose>
                         <br/><a href="/AlbumPage?name=${recommendedTitle[status.index].replace(" ", "+")}&id=${recommendedID[status.index]}"> ${recommendedTitle[status.index]} </a>
+                    </div>
+                </c:forEach>
+                </div>
+            </div>
+            <div>
+                <!--<label>From the same year</label><br/>-->
+                <c:forEach items="${yearTitle}" var="item" varStatus="status">
+                    <div class="col-lg-5 well">
+                        <c:choose>
+                            <c:when test="${yearPic[status.index] != \"None\"}">
+                                <img src="${yearPic[status.index]}" alt="Recommended Album Cover" class="img-thumbnail">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="http://kidsinanewgroove.org/wp-content/uploads/2015/05/guitar-2-174x174.png" alt="Recommended Album Cover" class="img-thumbnail">
+                            </c:otherwise>
+                        </c:choose>
+                        <br/><a href="/AlbumPage?name=${yearTitle[status.index].replace(" ", "+")}&id=${yearID[status.index]}"> ${yearTitle[status.index]} </a>
                     </div>
                 </c:forEach>
             </div>
