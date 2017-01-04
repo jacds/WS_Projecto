@@ -695,8 +695,6 @@ public class QueryManager {
             recommendationSize = 4;
 
             String year = getSingleInfo(searchID, "hasID", "hasYear").substring(0, 4);
-            System.out.println(year);
-
 
             ArrayList<ArrayList<String>> aux = albumsYear(searchID, year);
             result.add(aux.get(0));

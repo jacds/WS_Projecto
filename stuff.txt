@@ -20,16 +20,27 @@ hasName or hasTitle
 distance between words <=0.4
 
 
+SEMANTIC
+
 tracks of/by "Muse"
 tracks from "The Resistance"
 
 "genre" artist
 
 albums of "Muse"
+albums from year
 
 artists from "Location"
 artists born/dead "Year"
 
-(artists born/dead before/after "Year")
-
 male/female artists
+
+
+
+RECOMMENDATION
+
+Artists
+	hasGenres
+
+Albums 
+	Check Artist hasGenres and return albums from similar artists
