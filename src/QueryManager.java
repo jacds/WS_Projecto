@@ -705,7 +705,7 @@ public class QueryManager {
         //  2 - Get random values to choose artists/albums
         ArrayList<Integer> recommendedIndexes = new ArrayList<>();
         int index;
-        while(recommendedIndexes.size() < 5 && recommendedIndexes.size() < recommendedItem.size()){
+        while(recommendedIndexes.size() < 6 && recommendedIndexes.size() < recommendedItem.size()){
             index = (int) (Math.random() * recommendedItem.size());
             if(!recommendedIndexes.contains(index)){
                 recommendedIndexes.add(index);
