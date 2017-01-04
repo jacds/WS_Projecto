@@ -79,8 +79,14 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <img src="${result[2]}" alt="Album Cover" class="img-thumbnail">
-             ${item} </a> <br />
+            <c:choose>
+                <c:when test="${result[2] != \"None\"}">
+                    <img src="${result[2]}" alt="Album Cover" class="img-thumbnail">
+                </c:when>
+                <c:otherwise>
+                    <img src="http://kidsinanewgroove.org/wp-content/uploads/2015/05/guitar-2-174x174.png" alt="Album Cover" class="img-thumbnail">
+                </c:otherwise>
+            </c:choose>
             <br/><br/><label>Artist: </label> <a href="/ArtistPage?name=${result[1].replace(" ","+")}&id=${result[5]}"> ${result[1]} </a> <br/>
             <label>Date: </label> ${result[6]} <br/>
             <label>Description: </label> ${result[3]} <br/>
@@ -89,6 +95,23 @@
             <c:forEach items="${number}" var="item" varStatus="status">
                 <strong>${number[status.index]}</strong> <a href="/TrackPage?name=${title[status.index].replace(" ","+")}&id=${tracksID[status.index]}"> ${title[status.index]} </a> ${length[status.index]} <br />
             </c:forEach>
+
+            <div>
+                <h3>Recommended Albuns</h3> <br/>
+                <c:forEach items="${recommendedTitle}" var="item" varStatus="status">
+                    <div class="col-lg-5 well">
+                        <c:choose>
+                            <c:when test="${recommendedPic[status.index] != \"None\"}">
+                                <img src="${recommendedPic[status.index]}" alt="Recommended Album Cover" class="img-thumbnail">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="http://kidsinanewgroove.org/wp-content/uploads/2015/05/guitar-2-174x174.png" alt="Recommended Album Cover" class="img-thumbnail">
+                            </c:otherwise>
+                        </c:choose>
+                        <br/><a href="/AlbumPage?name=${recommendedTitle[status.index].replace(" ", "+")}&id=${recommendedID[status.index]}"> ${recommendedTitle[status.index]} </a>
+                    </div>
+                </c:forEach>
+            </div>
 
         </div>
         <!-- /.container-fluid -->

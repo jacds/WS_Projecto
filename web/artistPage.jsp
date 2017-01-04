@@ -79,7 +79,16 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <img src="${result[7]}" alt="Artist Picture" class="img-thumbnail">
+            <c:choose>
+                <c:when test="${result[7] != \"None\"}">
+                    <img src="${result[7]}" alt="Artist Picture" class="img-thumbnail">
+                </c:when>
+                <c:otherwise>
+                    <img src="http://kidsinanewgroove.org/wp-content/uploads/2015/05/guitar-2-174x174.png" alt="Artist Picture" class="img-thumbnail">
+                </c:otherwise>
+            </c:choose>
+
+
             <br /><br/>
             <c:if test="${not empty result[1]}">
                 <label>Gender: </label> ${result[1]} <br/>
@@ -94,6 +103,23 @@
             <c:forEach items="${albums}" var="item" varStatus="status">
                 <a href="/AlbumPage?name=${albums[status.index].replace(" ","+")}&id=${albumsID[status.index]}"> ${albums[status.index]} </a> <br />
             </c:forEach>
+
+            <div>
+                <h3>Recommended Artists</h3> <br/>
+                <c:forEach items="${recommendedName}" var="item" varStatus="status">
+                    <div class="col-lg-5 well">
+                        <c:choose>
+                            <c:when test="${recommendedPic[status.index] != \"None\"}">
+                                <img src="${recommendedPic[status.index]}" alt="Recommended Artist Picture" class="img-thumbnail">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="http://kidsinanewgroove.org/wp-content/uploads/2015/05/guitar-2-174x174.png" alt="Recommended Artist Picture" class="img-thumbnail">
+                            </c:otherwise>
+                        </c:choose>
+                        <br/><a href="/ArtistPage?name=${recommendedName[status.index].replace(" ", "+")}&id=${recommendedID[status.index]}"> ${recommendedName[status.index]} </a>
+                    </div>
+                </c:forEach>
+            </div>
 
         </div>
         <!-- /.container-fluid -->
