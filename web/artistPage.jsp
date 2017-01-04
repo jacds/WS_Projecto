@@ -79,10 +79,13 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            <img src="${result[7]}" alt="Artist Picture" class="img-thumbnail">
+            <br /><br/>
             <label>Gender: </label> ${result[1]} <br/>
             <label>Begin Date: </label> ${result[2]} <br/>
             <label>End Date: </label> ${result[3]} <br/>
             <label>Location: </label> ${result[4]} <br/>
+            <label>Genres: </label> ${result[8]} <br/>
             <label>Summary: </label> ${result[5]} <br/>
             <br/><label>See more at: </label> <a href="${result[6]}">LastFM Page</a> <br/>
             <br/><label>Albums: </label> <br/>

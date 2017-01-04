@@ -82,6 +82,7 @@
             <img src="${result[2]}" alt="Album Cover" class="img-thumbnail">
              ${item} </a> <br />
             <br/><br/><label>Artist: </label> <a href="/ArtistPage?name=${result[1].replace(" ","+")}&id=${result[5]}"> ${result[1]} </a> <br/>
+            <label>Date: </label> ${result[6]} <br/>
             <label>Description: </label> ${result[3]} <br/>
             <br/><label>See more at: </label> <a href="${result[4]}">LastFM Page</a> <br/>
             <br/><label>Tracks: </label> <br/>

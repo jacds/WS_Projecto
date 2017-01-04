@@ -81,6 +81,7 @@ public class QueryManager {
         result.add(beginDate);
         result.add(endDate);
 
+
         //  Location
         String location = getSingleInfo(id, "hasID", "hasLocation");
         result.add(location);
@@ -95,7 +96,13 @@ public class QueryManager {
         String lastFM = getSingleInfo(id, "hasID", "hasLastFMPage");
         result.add(lastFM);
 
-        // result = {name, gender, beginDate, endDate, location, description, lastFM};
+        String image = getSingleInfo(id, "hasID", "hasImage");
+        result.add(image);
+
+        String genres = getSingleInfo(id, "hasID", "hasGenres");
+        result.add(genres.substring(0, genres.length()-1));
+
+        // result = {name, gender, beginDate, endDate, location, description, lastFM, Image};
 
         ArrayList<ArrayList<String>> results = new ArrayList<>();
         results.add(result);
@@ -192,7 +199,9 @@ public class QueryManager {
         //  Add artist ID
         result.add(artistID);
 
-        //result = {title, artist, image, description, lastfm, id}
+        //result = {title, artist, image, description, lastfm, id, date}
+        String date = getSingleInfo(id, "hasID", "hasYear");
+        result.add(date);
         results.add(result);
 
         //  Tracks
