@@ -92,6 +92,11 @@ public class CreatePopulation {
 
                 //System.out.println(genresString.split(",").length);
 
+                try {
+                    newArtist.addLiteral(hasImage, subObj.get("Image"));
+                }catch(Exception e){
+                    newArtist.addLiteral(hasImage, "None");
+                }
                 newArtist.addLiteral(hasGenres, genresString);
                 newArtist.addLiteral(hasDescription, subObj.get("Description"));
                 newArtist.addLiteral(hasLastFMPage, subObj.get("URL"));
