@@ -1,0 +1,33 @@
+hasAlbum / isAlbumOf
+
+hasTrack / isTrackOf
+
+hasBeginDate or hasBirthDate
+
+hasLocation
+
+hasEndDate or hasDeathDate
+
+hasDescription
+
+hasGender
+
+hasLength
+
+hasName or hasTitle
+
+
+distance between words <=0.4
+
+
+tracks of/by "Muse"
+tracks from "The Resistance"
+
+albums of "Muse"
+
+artists from "Location"
+artists born/dead "Year"
+
+(artists born/dead before/after "Year")
+
+male/female artists
