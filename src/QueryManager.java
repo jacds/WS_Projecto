@@ -422,7 +422,6 @@ public class QueryManager {
                 }
             }
 
-            //System.out.println(searchClasses);
             if (searchClasses.isEmpty()) {
                 return null;
             }
@@ -448,24 +447,37 @@ public class QueryManager {
 
                 availableValues = getAvailableValues(temp_properties, temp_class);
                 //System.out.println(availableValues);
+                //System.out.println(words);
                 for (String word : words) {
                     temp1 = word.toLowerCase();
                     //System.out.println(temp1);
                     for (Map.Entry<String, ArrayList<String>> entry : availableValues.entrySet()) {
+                        //System.out.println(entry.getKey());
                         if (entry.getValue().contains(temp1)) {
                             listClassProperties.put(entry.getKey(), temp1);
                             if (!(word.equals("female") || word.equals("male"))) {
-                                //System.out.println(word);
+                                System.out.println("REMOVED: " + word);
                                 searchValues.remove(word);
+                            }
+                        }
+                        else if(entry.getKey().equals("hasGenres")){
+                            if(new NormalizedLevenshtein().distance(word, "Artist") <= 0.4){
+                                searchValues.remove(word);
+                            }
+                            else{
+                                if(!listClassProperties.containsKey("hasGenres")){
+                                    listClassProperties.put(entry.getKey(), word);
+                                }
                             }
                         }
                     }
                 }
             }
             //System.out.println(listClassProperties.entrySet());
-            //System.out.println(searchValues);
+            System.out.println(searchValues);
 
             String property = listClassProperties.entrySet().iterator().next().getKey();
+            System.out.println(property);
             String searchParameter;
             try{
                 searchParameter = searchValues.get(0).toLowerCase();

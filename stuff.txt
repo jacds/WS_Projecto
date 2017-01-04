@@ -23,6 +23,8 @@ distance between words <=0.4
 tracks of/by "Muse"
 tracks from "The Resistance"
 
+"genre" artist
+
 albums of "Muse"
 
 artists from "Location"
