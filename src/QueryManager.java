@@ -225,6 +225,9 @@ public class QueryManager {
         results.add(recommendation.get(0));
         results.add(recommendation.get(1));
         results.add(recommendation.get(2));
+        results.add(recommendation.get(3));
+        results.add(recommendation.get(4));
+        results.add(recommendation.get(5));
 
         return results;
     }
