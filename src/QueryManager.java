@@ -262,9 +262,9 @@ public class QueryManager {
 
         qe.close();
 
-        for(int i=0; i<ids.size(); i++){
+        /*for(int i=0; i<ids.size(); i++){
             System.out.println(name.get(i) + " " + ids.get(i));
-        }
+        }*/
 
         result.add(number);
         result.add(name);
@@ -378,10 +378,10 @@ public class QueryManager {
             }
         }
 
-        System.out.println("IDS: " + ids.size());
+        /*System.out.println("IDS: " + ids.size());
         for(int i=0; i<ids.size(); i++){
             System.out.println(result.get(i) + " " + ids.get(i));
-        }
+        }*/
 
         qe.close();
 
@@ -478,20 +478,31 @@ public class QueryManager {
             ArrayList<String> type = new ArrayList<>();
             if (searchClasses.contains("Album") || searchClasses.contains("Track")) {
                 parameter1 = "hasTitle";
-                parameter2 = (searchClasses.contains("Album")) ? "hasName" : "hasTitle";
-                parameter2 = "?y :" + parameter2 + "?name FILTER(lcase(str(?name)) =" + searchParameter + ")}";
-            } else {
+                if(property.equals("hasYear")){
+                    parameter2 = "FILTER( regex(str(?y), \"" + searchParameter + "\"))}";
+                }
+                else {
+                    parameter2 = (searchClasses.contains("Album")) ? "hasName" : "hasTitle";
+                    parameter2 = "?y :" + parameter2 + "?name FILTER(lcase(str(?name)) =" + searchParameter + ")}";
+                }
+            }
+            else {
                 parameter1 = "hasName";
                 parameter2 = listClassProperties.containsKey("hasGender") ? "FILTER( lcase(str(?y))=\"" + searchParameter + "\")}" : "FILTER( regex(lcase(str(?y))," + searchParameter + "))}";
+
+                if(searchParameter.equals("\"\"")){
+                    parameter2 = "FILTER( str(?y)!=\"None\")}";
+                }
             }
 
             if (listClassProperties.containsKey("artist") && searchClasses.contains("Track")) {
                 sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?x :hasName ?name. ?x :hasID ?artistID. ?y :isAlbumOf ?x. ?z :isTrackOf ?y. ?z :hasID ?parameterID. ?z :hasTitle ?parameter. FILTER(lcase(str(?name)) =" + searchParameter + ")}";
             } else {
-                sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?x :" + property + " ?y. ?x :" + parameter1 + "?parameter . ?x :hasID ?parameterID." + parameter2;
+                sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?x :" + property + " ?y. ?x :" + parameter1 + "?parameter . ?x :hasID ?parameterID. " + parameter2;
             }
 
             type.add(searchClasses.get(0));
+            System.out.println(sparqlQuery);
             results = executeIDQuery(sparqlQuery, "parameter", "parameterID");
             //System.out.println(type);
             results.add(type);
@@ -590,6 +601,9 @@ public class QueryManager {
                     temp.add("of");
                     temp.add("by");
                 }
+                else if(prop.equals("hasYear")){
+                    temp.add("from");
+                }
                 result.put(prop, new ArrayList<>(temp));
             }
         }
@@ -623,6 +637,9 @@ public class QueryManager {
                 else if(prop.equals("hasGender")){
                     temp.add("female");
                     temp.add("male");
+                }
+                else if(prop.equals("hasGenres")){
+                    temp.add("");
                 }
                 result.put(prop, new ArrayList<>(temp));
             }
