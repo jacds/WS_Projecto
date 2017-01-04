@@ -471,7 +471,6 @@ public class QueryManager {
                         if (entry.getValue().contains(temp1)) {
                             listClassProperties.put(entry.getKey(), temp1);
                             if (!(word.equals("female") || word.equals("male"))) {
-                                System.out.println("REMOVED: " + word);
                                 searchValues.remove(word);
                             }
                         }
@@ -680,6 +679,7 @@ public class QueryManager {
         ArrayList<String> recommendedID = new ArrayList<>();
         String[] genres = {};
         String sparqlQuery = "";
+        int recommendationSize = 6;
 
         if(cl.equals("Artist")){
             genres = getSingleInfo(searchID, "hasID", "hasGenres").split(",");
@@ -689,6 +689,16 @@ public class QueryManager {
             String id = getSingleInfo(searchID, "hasID", "isAlbumOf").replace("http://www.semanticweb.org/rocha/ontologies/SemanticMusic#", "");
             genres = getSingleInfo(id, "hasID", "hasGenres").split(",");
             sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?z :isAlbumOf ?x. ?z :hasTitle ?parameter. ?z :hasID ?parameterID. ?x :hasGenres ?y. FILTER(regex(str(?y), \"";
+            recommendationSize = 4;
+
+            String year = getSingleInfo(searchID, "hasID", "hasYear").substring(0, 4);
+            System.out.println(year);
+
+
+            ArrayList<ArrayList<String>> aux = albumsYear(searchID, year);
+            result.add(aux.get(0));
+            result.add(aux.get(1));
+            result.add(aux.get(2));
         }
 
         //  1 - Get Similar Artists/Albums
@@ -705,7 +715,7 @@ public class QueryManager {
         //  2 - Get random values to choose artists/albums
         ArrayList<Integer> recommendedIndexes = new ArrayList<>();
         int index;
-        while(recommendedIndexes.size() < 6 && recommendedIndexes.size() < recommendedItem.size()){
+        while(recommendedIndexes.size() < recommendationSize && recommendedIndexes.size() < recommendedItem.size()){
             index = (int) (Math.random() * recommendedItem.size());
             if(!recommendedIndexes.contains(index)){
                 recommendedIndexes.add(index);
@@ -733,5 +743,45 @@ public class QueryManager {
         //System.out.println(result);
 
         return result;
+    }
+
+    private ArrayList<ArrayList<String>> albumsYear(String searchID, String year){
+        String sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?x :hasYear ?y. ?x :hasTitle ?parameter. ?x :hasID ?parameterID. FILTER(regex(str(?y), \"" + year + "\") && ?parameterID != " + searchID + ")}";
+
+        ArrayList<ArrayList<String>> albumsYear = executeIDQuery(sparqlQuery, "parameter", "parameterID");
+        //System.out.println(albumsYear);
+
+        // Get random values to choose albums
+        ArrayList<Integer> recommendedIndexes = new ArrayList<>();
+        int index;
+        while(recommendedIndexes.size() < 2 && recommendedIndexes.size() < albumsYear.get(0).size()){
+            index = (int) (Math.random() * albumsYear.get(0).size());
+            if(!recommendedIndexes.contains(index)){
+                recommendedIndexes.add(index);
+            }
+        }
+
+        //  Add selected artists/albums to return
+        ArrayList<String> auxItem = new ArrayList<>();
+        ArrayList<String> auxID = new ArrayList<>();
+        for(int i=0; i<recommendedIndexes.size(); i++){
+            auxItem.add(albumsYear.get(0).get(recommendedIndexes.get(i)));
+            auxID.add(albumsYear.get(1).get(recommendedIndexes.get(i)));
+        }
+
+        //  Search select artists/albums images
+        ArrayList<String> auxImages = new ArrayList<>();
+        for(int i=0; i<auxID.size(); i++){
+            auxImages.add(getSingleInfo(auxID.get(i), "hasID", "hasImage"));
+        }
+
+        albumsYear.clear();
+        albumsYear.add(auxItem);
+        albumsYear.add(auxID);
+        albumsYear.add(auxImages);
+
+        //System.out.println(albumsYear);
+
+        return  albumsYear;
     }
 }
