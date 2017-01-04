@@ -41,6 +41,9 @@ public class AlbumPage extends HttpServlet {
         request.setAttribute("title", tracksTitle);
         request.setAttribute("length", tracksLength);
         request.setAttribute("tracksID", tracksId);
+        request.setAttribute("recommendedTitle", result.get(5));
+        request.setAttribute("recommendedID", result.get(6));
+        request.setAttribute("recommendedPic", result.get(7));
         RequestDispatcher view=request.getRequestDispatcher("albumPage.jsp");
         view.forward(request,response);
 

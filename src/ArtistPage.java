@@ -33,6 +33,9 @@ public class ArtistPage extends HttpServlet {
         request.setAttribute("result", artistInfo);
         request.setAttribute("albums", artistAlbums);
         request.setAttribute("albumsID", result.get(2));
+        request.setAttribute("recommendedName", result.get(3));
+        request.setAttribute("recommendedID", result.get(4));
+        request.setAttribute("recommendedPic", result.get(5));
         RequestDispatcher view=request.getRequestDispatcher("artistPage.jsp");
         view.forward(request,response);
     }

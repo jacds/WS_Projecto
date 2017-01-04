@@ -4,6 +4,7 @@ import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 
+import java.lang.reflect.Array;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -112,6 +113,13 @@ public class QueryManager {
         results.add(albums.get(0));
         results.add(albums.get(1));
 
+        ArrayList<ArrayList<String>> recommendation = recommendationSystem("Artist", id);
+
+        //  Add recommendation data
+        results.add(recommendation.get(0));
+        results.add(recommendation.get(1));
+        results.add(recommendation.get(2));
+
         return results;
     }
 
@@ -210,6 +218,13 @@ public class QueryManager {
         for (ArrayList<String> list: tracks ) {
             results.add(list);
         }
+
+        ArrayList<ArrayList<String>> recommendation = recommendationSystem("Album", id);
+
+        //  Add recommendation data
+        results.add(recommendation.get(0));
+        results.add(recommendation.get(1));
+        results.add(recommendation.get(2));
 
         return results;
     }
@@ -474,10 +489,10 @@ public class QueryManager {
                 }
             }
             //System.out.println(listClassProperties.entrySet());
-            System.out.println(searchValues);
+            //System.out.println(searchValues);
 
             String property = listClassProperties.entrySet().iterator().next().getKey();
-            System.out.println(property);
+            //System.out.println(property);
             String searchParameter;
             try{
                 searchParameter = searchValues.get(0).toLowerCase();
@@ -656,6 +671,67 @@ public class QueryManager {
                 result.put(prop, new ArrayList<>(temp));
             }
         }
+        return result;
+    }
+
+    public ArrayList<ArrayList<String>> recommendationSystem(String cl, String searchID){
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+        ArrayList<String> recommendedItem = new ArrayList<>();
+        ArrayList<String> recommendedID = new ArrayList<>();
+        String[] genres = {};
+        String sparqlQuery = "";
+
+        if(cl.equals("Artist")){
+            genres = getSingleInfo(searchID, "hasID", "hasGenres").split(",");
+            sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?x :hasName ?parameter. ?x :hasID ?parameterID. ?x :hasGenres ?y. FILTER(regex(str(?y), \"";
+        }
+        else if(cl.equals("Album")){
+            String id = getSingleInfo(searchID, "hasID", "isAlbumOf").replace("http://www.semanticweb.org/rocha/ontologies/SemanticMusic#", "");
+            genres = getSingleInfo(id, "hasID", "hasGenres").split(",");
+            sparqlQuery = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?parameter ?parameterID WHERE {?z :isAlbumOf ?x. ?z :hasTitle ?parameter. ?z :hasID ?parameterID. ?x :hasGenres ?y. FILTER(regex(str(?y), \"";
+        }
+
+        //  1 - Get Similar Artists/Albums
+        for(int i=0; i<genres.length; i++){
+            ArrayList<ArrayList<String>> temp = executeIDQuery(sparqlQuery + genres[i] + "\") && ?parameterID != " + searchID + ")}", "parameter", "parameterID");
+            for(int j=0; j<temp.get(0).size(); j++){
+                if(!recommendedItem.contains(temp.get(0).get(j))){
+                    recommendedItem.add(temp.get(0).get(j));
+                    recommendedID.add(temp.get(1).get(j));
+                }
+            }
+        }
+
+        //  2 - Get random values to choose artists/albums
+        ArrayList<Integer> recommendedIndexes = new ArrayList<>();
+        int index;
+        while(recommendedIndexes.size() < 5 && recommendedIndexes.size() < recommendedItem.size()){
+            index = (int) (Math.random() * recommendedItem.size());
+            if(!recommendedIndexes.contains(index)){
+                recommendedIndexes.add(index);
+            }
+        }
+
+        //  3 - Add selected artists/albums to return
+        ArrayList<String> auxItem = new ArrayList<>();
+        ArrayList<String> auxID = new ArrayList<>();
+        for(int i=0; i<recommendedIndexes.size(); i++){
+            auxItem.add(recommendedItem.get(recommendedIndexes.get(i)));
+            auxID.add(recommendedID.get(recommendedIndexes.get(i)));
+        }
+        result.add(auxItem);
+        result.add(auxID);
+
+        //  4 - Search select artists/albums images
+        ArrayList<String> auxImages = new ArrayList<>();
+        for(int i=0; i<auxID.size(); i++){
+            auxImages.add(getSingleInfo(auxID.get(i), "hasID", "hasImage"));
+        }
+
+        result.add(auxImages);
+
+        //System.out.println(result);
+
         return result;
     }
 }
