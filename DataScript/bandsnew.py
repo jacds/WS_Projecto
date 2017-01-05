@@ -7,7 +7,7 @@ ID = 175
 
 api_key = "a8957e6fbc07c4b79dec968535bf1a4a"
 
-'''bands = {}
+bands = {}
 
 #GET TOP ARTISTS
 for i in range(2,5):
@@ -91,7 +91,7 @@ for i,v in bands.items():
 	print(bands[i]['Name'] + " INFO RETRIEVED")
 
 with open('../data/artists.json', 'w') as outfile:
-    json.dump(bands, outfile)'''
+    json.dump(bands, outfile)
 
 with open('../data/artists.json') as data_file:    
     bands = json.load(data_file)
