@@ -25,36 +25,7 @@ public class TDB {
 
     public static void main(String[] args) {
 
-        //createTDB();
-        //LOAD TRIPLE STORE
-        /*Dataset dataset = TDBFactory.createDataset("./tdb");
-        //model can be queried with SPARQL
-        Model model = dataset.getDefaultModel();
-
-
-        String queryString = "PREFIX : <" + nameSpace + "> SELECT DISTINCT ?number ?length ?artist ?album WHERE { ?x :isTrackOf ?y. ?x :hasTitle \"" + "Hysteria" + "\". ?y :hasTitle ?album . ?y :isAlbumOf ?z . ?z :hasName ?artist .?x :hasNumber ?number. ?x :hasLength ?length}";
-
-
-        Query query = QueryFactory.create(queryString) ;
-        try (QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
-            ResultSet results = qexec.execSelect() ;
-            results = ResultSetFactory.copyResults(results);
-            ResultSetFormatter.out(System.out, results, query) ;
-        }
-
-        model.close();
-        dataset.close();*/
-
-        //double distance = new Jaccard().similarity("track", "tracks");
-        //double distance = new NormalizedLevenshtein().distance("album", "trcks");
-        //System.out.println(distance);
-
-        //QueryManager qm = new QueryManager();
-        //qm.getSemanticResults("tracks of \"Muse\"");
-        //qm.getSemanticResults("female artists");
-        //qm.getSemanticResults("male artists");
-        //qm.getSemanticResults("artists dead \"2016\"");
-
+        createTDB();
     }
 
 }
