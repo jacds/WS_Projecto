@@ -477,7 +477,7 @@ public class QueryManager {
                                 searchValues.remove(word);
                             }
                         }
-                        else if(entry.getKey().equals("hasGenres")){
+                        else if(entry.getKey().equals("hasGenres") && !(word.equals("female") || word.equals("male"))){
                             if(new NormalizedLevenshtein().distance(word, "Artist") <= 0.4){
                                 searchValues.remove(word);
                             }
