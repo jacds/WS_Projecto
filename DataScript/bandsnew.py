@@ -5,7 +5,7 @@ import json
 
 ID = 175
 
-api_key = "a8957e6fbc07c4b79dec968535bf1a4a"
+api_key = "" #This should be you LastFM API Key
 
 bands = {}
 
